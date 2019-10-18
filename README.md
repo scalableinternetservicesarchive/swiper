@@ -1,6 +1,6 @@
 # Swiper
 #### UCLA CS 188, Fall 2019
-
+[![Build Status](https://travis-ci.org/scalableinternetservices/swiper.svg?branch=master)](https://travis-ci.org/scalableinternetservices/swiper)
 | Name | GitHub username | Photo |
 | --- | --- | --- |
 | Aaron Yoo | @aaronyoo | ![Image of Aaron Yoo](https://avatars3.githubusercontent.com/u/11811606?s=400&v=4) |
