@@ -1,5 +1,6 @@
 # Swiper
 #### UCLA CS 188, Fall 2019
+[![Build Status](https://travis-ci.org/scalableinternetservices/swiper.svg?branch=master)](https://travis-ci.org/scalableinternetservices/swiper)
 
 | Name | GitHub username | Photo |
 | --- | --- | --- |
