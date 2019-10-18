@@ -1,0 +1,16 @@
+<h1>Listings</h1>
+
+<div class="listings">
+    <% @listings.each do |listing| %>
+        <div class="listing">
+            <h3><%= link_to listing.name, listing_path(listing) %></h3>
+            <p><%= listing.description %></p>
+            <ul class="listing-actions">
+                <li><%= link_to "Edit", edit_listing_path(listing) %></li>
+                <li><%= link_to "Delete", listing_path(listing), data: {
+                    confirm: "Are you sure you want to delete this listing?",
+                }, method: :delete %></li>
+            </ul>
+        </div>
+    <% end %>
+</div>
