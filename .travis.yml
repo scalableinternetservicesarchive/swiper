@@ -1,4 +1,6 @@
 language: ruby
 rvm:
    - 2.6.5
-before_install: cd swiper
+before_install:
+   - cd swiper
+   - gem install bundler
