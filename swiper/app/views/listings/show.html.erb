@@ -1,0 +1,14 @@
+<h1><%= @listing.name %></h1>
+
+<h2>Description:</h2>
+<p><%= @listing.description %>
+
+<div>
+    <ul class="listing-actions">
+        <li><%= link_to "Back", listings_path %></li>
+        <li><%= link_to "Edit", edit_listing_path(@listing) %></li>
+        <li><%= link_to "Delete", listing_path(@listing), data: {
+            confirm: "Are you sure you want to delete this listing?",
+        }, method: :delete %></li>
+    </ul>
+</div>

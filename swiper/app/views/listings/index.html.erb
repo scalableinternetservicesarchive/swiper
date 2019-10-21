@@ -1,5 +1,9 @@
 <h1>Listings</h1>
 
+<div>
+    <%= link_to "New Listing", new_listing_path %>
+</div>
+
 <div class="listings">
     <% @listings.each do |listing| %>
         <div class="listing">

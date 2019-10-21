@@ -13,7 +13,7 @@ Listing.delete_all
 User.delete_all
 
 puts "Creating user"
-user = FactoryBot.create(:user, email: "test@example.com")
+user = FactoryBot.create(:user, email: "test@example.com", password:"test")
 
 puts "Creating Listings"
 20.times do
