@@ -22,6 +22,21 @@ class ListingsController < ApplicationController
         end
     end
 
+    def edit
+        @listing = current_user.listings.find(params[:id])
+    end
+
+    def update
+        @listing = current_user.listings.find(params[:id])
+
+        if @listing.update_attributes(listing_params)
+            redirect_to listing_path(@listing), notice: "Listing Updated!"
+        else
+            @errors = @listing.errors.full_messages
+            render :edit
+        end
+    end
+
     def destroy
         listing = Listing.find(params[:id])
         listing.destroy
