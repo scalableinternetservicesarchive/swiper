@@ -1,42 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Swiper</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+  <%= render 'layouts/header' %>
 
   <body>
+    <%= render 'layouts/navbar' %>
 
-    <header>
-      <% if signed_in? %>
-        Signed in as: <%= current_user.email %>
-        <%= button_to 'Sign out', sign_out_path, method: :delete %>
-      <% else %>
-        <%= link_to 'Sign in', sign_in_path %>
-      <% end %>
-    </header>
-
-    <section>
+    <section class="section">
       <div class="container">
-        <div class="notification">
-          This is a styling <strong>test</strong> on desktop.
-        </div>
-      </div>
-    </section>
-    
-    <section>
-      <div id="flash">
-        <% flash.each do |key, value| %>
-          <div class="flash <%= key %>"><%= value %></div>
-        <% end %>
-      </div>
 
-      <%= yield %>
+        <div id="flash" >
+          <% flash.each do |key, value| %>
+            <div class="flash <%= key %> notification is-error"><%= value %></div>
+          <% end %>
+        </div>
+
+        <%= yield %>
+        
+      </div>
     </section>
-    
   </body>
+
+  <%= render 'layouts/footer' %>
 </html>

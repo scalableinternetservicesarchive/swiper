@@ -1,0 +1,52 @@
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <%= link_to '/', class: "navbar-item" do%>
+      <span class="title is-2">🦊 Swiper</span> <!-- TODO: Add real logo -->
+    <% end %>
+
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      
+        
+        <% if signed_in? %>
+          <%= link_to 'Buy Swipes', listings_path, class: "navbar-item" %>
+          <%= link_to 'Sell Swipes', new_listing_path, class: "navbar-item" %>
+
+          <!-- TODO: Setup link to view user's stage 2 listings -->
+          <a class="navbar-item">My Orders</a>
+        <% end %>
+    </div>
+  </div>
+    
+
+    <div class="navbar-end">
+          <% if signed_in? %>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                <%= current_user.email.truncate(15) %>
+              </a>
+
+              <div class="navbar-dropdown">
+                <!-- TODO: Replace links with link_to correct pages -->
+                <a class="navbar-item">
+                  Profile
+                </a>
+                <a class="navbar-item">
+                  Settings
+                </a>
+                <hr class="navbar-divider">
+                <%= link_to 'Sign Out', sign_out_path, method: :delete, class: "navbar-item" %>
+              </div>
+            </div>
+            
+          <% else %>
+            <div class="navbar-item">
+              <div class="buttons">
+                <%= link_to 'Log In', sign_in_path, class: "button is-link" %>
+              </div>
+            </div>
+          <% end %>
+    </div>
+  </div>
+</nav>
