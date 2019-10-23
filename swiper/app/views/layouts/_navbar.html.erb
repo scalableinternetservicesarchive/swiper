@@ -7,10 +7,15 @@
   </div>
   <div class="navbar-menu">
     <div class="navbar-start">
-      <!-- TODO: Add nav elements in here -->
-        <%= link_to 'Buy Swipes', listings_path, class: "navbar-item" %>
-        <%= link_to 'Sell Swipes', new_listing_path, class: "navbar-item" %>
+      
+        
+        <% if signed_in? %>
+          <%= link_to 'Buy Swipes', listings_path, class: "navbar-item" %>
+          <%= link_to 'Sell Swipes', new_listing_path, class: "navbar-item" %>
 
+          <!-- TODO: Setup link to view user's stage 2 listings -->
+          <a class="navbar-item">My Orders</a>
+        <% end %>
     </div>
   </div>
     
