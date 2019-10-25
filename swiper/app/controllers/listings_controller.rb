@@ -40,7 +40,7 @@ class ListingsController < ApplicationController
     def destroy
         listing = Listing.find(params[:id])
         listing.destroy
-        redirect_to listings_path, notice: "Deleted Listing: #{listing.name}"
+        redirect_to listings_path, notice: "Deleted Listing for  #{listing.pretty_location()}"
     end
 
     private
