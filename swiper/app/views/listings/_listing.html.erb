@@ -1,0 +1,12 @@
+<li class="listing" id="listing-<%= listing.id%>">
+  <span> <%= listing.id%></span>
+  <span class="location">
+    <%= link_to listing.location, listing_path(listing) %>
+  </span>
+  <span class="price">
+    <%= number_with_precision(listing.price, precision: 2)%>
+  </span>
+  <span class="amount">
+    <%= listing.amount%>
+  </span>
+</li>
