@@ -1,7 +1,16 @@
-<h1><%= @listing.name %></h1>
 
-<h2>Description:</h2>
-<p><%= @listing.description %>
+<tr class="listing" id="listing-<%= @listing.id%>">
+  <%# <td> <%= listing.id%>
+  <td class="location">
+    <%= @listing.pretty_location() %>
+  </td>
+  <td class="price">
+    $<%= number_with_precision(@listing.price, precision: 2)%>
+  </td>
+  <td class="amount">
+    <%= @listing.amount%>
+  </td>
+</tr>
 
 <div>
     <ul class="listing-actions">

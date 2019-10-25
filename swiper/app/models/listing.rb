@@ -17,19 +17,24 @@ class Listing < ApplicationRecord
         completed 
     ]
 
-    def pretty_location
-        names =  {
-            b_plate: "BPlate", 
-            covel: "Covel", 
-            de_neve: "DeNeve", 
-            feast: "Feast", 
+    @@names =  {
+        b_plate: "BPlate", 
+        covel: "Covel", 
+        de_neve: "DeNeve", 
+        feast: "Feast", 
 
-            b_cafe: "BCafe", 
-            nineteen_nineteen: "1919", 
-            rende: "Rende",  
-            study: "Study"
-        }
-        names[location.to_sym]
+        b_cafe: "BCafe", 
+        nineteen_nineteen: "1919", 
+        rende: "Rende",  
+        study: "Study"
+    }
+
+    def pretty_location
+        @@names[location.to_sym]
+    end
+
+    def self.pretty_location(location)
+        @@names[location.to_sym]
     end
 end
   

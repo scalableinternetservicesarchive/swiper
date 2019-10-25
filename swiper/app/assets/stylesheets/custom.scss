@@ -10,3 +10,15 @@
     border-top: 1px solid #e8e8e8;
   }
 }
+
+
+input, textarea, select, .uneditable-input { 
+  border: 1px solid #bbb;
+  margin-bottom: 15px;
+}
+
+input {
+  height: auto !important;
+}
+
+  
