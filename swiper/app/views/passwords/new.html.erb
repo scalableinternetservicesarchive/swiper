@@ -1,0 +1,19 @@
+<div id="clearance" class="password-reset columns">
+  <div class="column is-one-third"></div>
+  <div class="column is-one-third">
+    <span class="title is-2"><%= t(".title") %></span>
+
+    <p><%= t(".description") %></p>
+
+    <%= form_for :password, url: passwords_path do |form| %>
+      <div class="field">
+        <%= form.label :email, class: "label"%>
+        <%= form.text_field :email, type: 'email', class: "input" %>
+      </div>
+
+      <div class="control">
+        <%= form.submit 'Submit', class: "button is-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

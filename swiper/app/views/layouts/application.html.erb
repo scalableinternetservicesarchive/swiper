@@ -2,7 +2,7 @@
 <html>
   <%= render 'layouts/header' %>
 
-  <body>
+  <body class="has-navbar-fixed-top">
     <%= render 'layouts/navbar' %>
 
     <section class="section">
@@ -10,7 +10,7 @@
 
         <div id="flash" >
           <% flash.each do |key, value| %>
-            <div class="flash <%= key %> notification is-error"><%= value %></div>
+            <div class="flash <%= key %> notification"><%= value %></div>
           <% end %>
         </div>
 
