@@ -1,0 +1,24 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.listings {
+  list-style: none;
+  padding: 0;
+
+  td {
+    padding: 10px;
+    border-top: 1px solid #e8e8e8;
+  }
+}
+
+
+input, textarea, select, .uneditable-input { 
+  border: 1px solid #bbb;
+  margin-bottom: 15px;
+}
+
+input {
+  height: auto !important;
+}
+
+  

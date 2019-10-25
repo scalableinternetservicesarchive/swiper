@@ -15,7 +15,16 @@ User.delete_all
 puts "Creating user"
 user = FactoryBot.create(:user, email: "test@example.com", password:"test")
 
+puts "Creating lots of users"
+25.times do |n|
+    email = "example-#{n+1}@railstutorial.org" 
+    password = "password"
+    User.create!(email: email, password:password)
+end
+
 puts "Creating Listings"
-20.times do
-    FactoryBot.create(:listing, user: user)
+User.all.each do |u|
+    2.times do
+        FactoryBot.create(:listing, user: u)
+    end
 end

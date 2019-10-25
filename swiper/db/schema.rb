@@ -10,16 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_17_193753) do
+ActiveRecord::Schema.define(version: 2019_10_25_213714) do
 
   create_table "listings", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "name"], name: "index_listings_on_user_id_and_name"
+    t.float "price", null: false
+    t.integer "location", null: false
+    t.integer "amount", default: 1
+    t.integer "state", default: 0
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text "description"
+    t.index ["price"], name: "index_listings_on_price"
     t.index ["user_id"], name: "index_listings_on_user_id"
+    t.index ["user_id"], name: "index_listings_on_user_id_and_name"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,0 +1,14 @@
+<div id="filter">
+  <%= form_with(model: @listing, local: true) do |f|%>
+  <%= f.label :location, class: "field_label"%>
+  <% Listing.locations.keys.each do |key| %>
+    <%= f.check_box key, checked: true %>
+    <%= f.label "#{key}_label", Listing.pretty_location(key) %>
+  <%end%>
+
+  <%= f.label :price, class: "field_label"%>
+  <%= f.label :time, class: "field_label"%>
+  <%= f.label :amount, class: "field_label"%>
+  <%= f.submit "Filter", class: "btn btn-primary"%>
+  <% end %>
+</div>
