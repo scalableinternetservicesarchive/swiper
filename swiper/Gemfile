@@ -7,6 +7,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'rails', '~> 6.0.0'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
+# Styling with bulma
+gem 'bulma-rails', '~> 0.7.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -28,9 +30,6 @@ gem 'clearance', '~> 1.15.1'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
-
-# Styling with bulma
-gem "bulma-rails", "~> 0.7.5"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
