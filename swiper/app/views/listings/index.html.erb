@@ -1,18 +1,18 @@
 <h1>Listings</h1>
 
-<div id="New Listing">
-    <%= link_to "New Listing", new_listing_path %>
-</div>
-
-<aside class="col-md-8">
-    <div class="listings">
-        <div class="listing">
-            <% @listings.each do |listing| %>
-            <ul>
-                <%= render listing%>
-            </ul>
-            <% end %>
+<div class="row">
+    <aside class="col-md-4">
+        <div id="New Listing">
+            <%= link_to "New Listing", new_listing_path %>
         </div>
-        <%= will_paginate @listings%>
+    </aside>
+
+    <div class="col-md-8">
+        <div class="listings">
+            <table>
+                <%= render @listings%>
+            </table>
+            <%= will_paginate @listings%>
+        </div>
     </div>
-</aside>
+</div>

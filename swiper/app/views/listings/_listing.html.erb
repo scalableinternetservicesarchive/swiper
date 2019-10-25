@@ -1,12 +1,12 @@
-<li class="listing" id="listing-<%= listing.id%>">
-  <span> <%= listing.id%></span>
-  <span class="location">
-    <%= link_to listing.location, listing_path(listing) %>
-  </span>
-  <span class="price">
-    <%= number_with_precision(listing.price, precision: 2)%>
-  </span>
-  <span class="amount">
+<tr class="listing" id="listing-<%= listing.id%>">
+  <%# <td> <%= listing.id%>M
+  <td class="location">
+    <%= link_to listing.pretty_location(), listing_path(listing) %>
+  </td>
+  <td class="price">
+    $<%= number_with_precision(listing.price, precision: 2)%>
+  </td>
+  <td class="amount">
     <%= listing.amount%>
-  </span>
-</li>
+  </td>
+</tr>

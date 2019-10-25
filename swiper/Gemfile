@@ -33,6 +33,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 # Styling with bulma
 gem "bulma-rails", "~> 0.7.5"
+#also bootstap
+gem 'bootstrap-will_paginate', '1.0.0'
+gem 'bootstrap-sass',          '3.4.1'
 
 #pagination is pretty
 gem 'will_paginate', '3.1.8'

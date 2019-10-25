@@ -58,10 +58,17 @@ GEM
       zeitwerk (~> 2.1, >= 2.1.8)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    autoprefixer-rails (9.6.5)
+      execjs
     bcrypt (3.1.13)
     bindex (0.8.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
+    bootstrap-sass (3.4.1)
+      autoprefixer-rails (>= 5.2.1)
+      sassc (>= 2.0.0)
+    bootstrap-will_paginate (1.0.0)
+      will_paginate
     builder (3.2.3)
     bulma-rails (0.7.5)
       sassc (~> 2.0)
@@ -84,6 +91,7 @@ GEM
     email_validator (1.6.0)
       activemodel
     erubi (1.9.0)
+    execjs (2.7.0)
     factory_bot (5.1.1)
       activesupport (>= 4.2.0)
     factory_bot_rails (5.1.1)
@@ -221,6 +229,8 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.4.2)
+  bootstrap-sass (= 3.4.1)
+  bootstrap-will_paginate (= 1.0.0)
   bulma-rails (~> 0.7.5)
   byebug
   capybara (>= 2.15)
