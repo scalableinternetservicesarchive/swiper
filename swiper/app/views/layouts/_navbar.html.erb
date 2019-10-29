@@ -12,6 +12,7 @@
         <% if signed_in? %>
           <%= link_to 'Buy Swipes', listings_path, class: "navbar-item" %>
           <%= link_to 'Sell Swipes', new_listing_path, class: "navbar-item" %>
+          <%= link_to 'My Profile', profile_path(current_user.id), class: "navbar-item" %>
 
           <!-- TODO: Setup link to view user's stage 2 listings -->
           <a class="navbar-item">My Orders</a>
