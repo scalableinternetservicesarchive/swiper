@@ -1,6 +1,6 @@
 class AddExtraDataToListings < ActiveRecord::Migration[6.0]
   def change
-    add_column :listings, :price, :double
+    add_column :listings, :price, :float
     add_column :listings, :location, :integer
 
     # we have to make the columns before we can make them not null
