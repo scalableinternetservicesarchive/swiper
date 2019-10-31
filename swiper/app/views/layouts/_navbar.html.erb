@@ -1,4 +1,4 @@
-<nav class="navbar is-primary is-fixed-top" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <%= link_to '/', class: "navbar-item" do%>
       <span class="title is-2">🦊 Swiper</span> <!-- TODO: Add real logo -->
@@ -43,7 +43,7 @@
           <% else %>
             <div class="navbar-item">
               <div class="buttons">
-                <%= link_to 'Log In', sign_in_path, class: "button is-link" %>
+                <%= link_to 'Log In', sign_in_path, class: "button is-primary" %>
               </div>
             </div>
           <% end %>
