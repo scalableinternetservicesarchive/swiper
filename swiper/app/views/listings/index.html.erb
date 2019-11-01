@@ -6,11 +6,8 @@
     </aside>
 
     <div class="column is-three-quarter">
-        <div class="listings">
-            <table>
-                <%= render @listings%>
-            </table>
-            <%= will_paginate @listings%>
+        <div class="listings" id="listing_list">
+            <%= render 'list'%>
         </div>
     </div>
 </div>

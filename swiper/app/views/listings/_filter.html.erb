@@ -1,14 +1,30 @@
-<div id="filter">
-  <%= form_with(model: @listing, local: true) do |f|%>
-  <%= f.label :location, class: "field_label"%>
-  <% Listing.locations.keys.each do |key| %>
-    <%= f.check_box key, checked: true %>
-    <%= f.label "#{key}_label", Listing.pretty_location(key) %>
-  <%end%>
+<div class="filter">
+  <%= form_with(path: listings_path, method: :get, scope: :filter, remote: true) do |f|%>
+  <div class="filter_section">
+    <%= f.label :location, class: "field_label"%>
+    <% Listing.locations.keys.each do |key| %>
+    <div class="location_checkbox">
+      <%= f.check_box key, checked: true%>
+      <%= f.label "#{key}_label", key %>
+    </div>
+    <%end%>
 
-  <%= f.label :price, class: "field_label"%>
-  <%= f.label :time, class: "field_label"%>
-  <%= f.label :amount, class: "field_label"%>
-  <%= f.submit "Filter", class: "btn btn-primary"%>
-  <% end %>
-</div>
+    <div class="filter_section">
+      <%= f.label :price, class: "field_label"%>
+      <%= f.number_field :price, placeholder: "Max price", step: 0.25%>
+    </div>
+
+    <div class="filter_section">
+      <%= f.label :time, class: "field_label"%>
+      <%= f.time_field :earliest, step: 900, placeholder: "8:00"%>
+      <%= f.time_field :latest, step: 900%>
+    </div>
+
+    <div class="filter_section">
+      <%= f.label :amount, class: "field_label"%>
+      <%= f.number_field :amount, step: 1, placeholder: "Min # of swipes"%>
+    </div>
+
+    <%= f.submit "Filter", class: "btn btn-primary"%>
+    <% end %>
+  </div>

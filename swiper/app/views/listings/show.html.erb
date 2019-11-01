@@ -2,7 +2,7 @@
 <tr class="listing" id="listing-<%= @listing.id%>">
   <%# <td> <%= listing.id%>
   <td class="location">
-    <%= @listing.pretty_location() %>
+    <%= @listing %>
   </td>
   <td class="price">
     $<%= number_with_precision(@listing.price, precision: 2)%>

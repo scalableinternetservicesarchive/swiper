@@ -1,6 +1,30 @@
 class ListingsController < ApplicationController
+
+    private
+    def listing_params
+        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price)
+    end
+
+    def filter_listings(filter_params)
+        selected_locations = []
+        Listing.locations.keys.each do |loc|
+            if !filter_params[loc] || filter_params[loc] == '1'
+                selected_locations << loc
+            end
+        end
+        filtered = Listing.where(location: selected_locations)
+        filtered = filtered.where("price <= ?", filter_params[:price]) unless filter_params[:price].empty?
+        filtered = filtered.where("? <= amount", filter_params[:amount]) unless filter_params[:amount].empty?
+        return filtered
+    end
+
+    public
     def index
-        @listings = Listing.paginate(page: params[:page])
+        if params[:filter]
+            @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(:price)
+        else
+            @listings = Listing.paginate(page: params[:page]).order(:price)
+        end
     end
 
     def show
@@ -40,12 +64,6 @@ class ListingsController < ApplicationController
     def destroy
         listing = Listing.find(params[:id])
         listing.destroy
-        redirect_to listings_path, notice: "Deleted Listing for  #{listing.pretty_location()}"
-    end
-
-    private
-
-    def listing_params
-        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price)
+        redirect_to listings_path, notice: "Deleted Listing for  #{listing.location}"
     end
 end
