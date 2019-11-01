@@ -1,5 +1,5 @@
 <div class="filter">
-  <%= form_with(path: listings_path, method: :get, scope: :filter, local: true) do |f|%>
+  <%= form_with(path: listings_path, method: :get, scope: :filter, remote: true) do |f|%>
   <div class="filter_section">
     <%= f.label :location, class: "field_label"%>
     <% Listing.locations.keys.each do |key| %>
