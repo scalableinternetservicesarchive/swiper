@@ -13,8 +13,29 @@
  *= require_tree .
  *= require_self
  */
+
+$white: #ffffff;
+$purple: #9400ff;
+$orange: #ff9400;
+
+$navbar-background-color: $purple;
+$navbar-item-color: $white;
+
+$title-color: $white;
+
+$primary: $orange;
+$link: $purple;
+
 @import 'bulma';
 
 html {
   overflow-y: auto;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
 }
