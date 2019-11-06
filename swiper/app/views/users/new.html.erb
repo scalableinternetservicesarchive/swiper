@@ -4,6 +4,13 @@
     <span class="title is-2">Sign Up</span>
     <%= form_for @user do |form|%>
       <%= render partial: '/users/form', object: form %>
+
+      <div class="level is-mobile">
+        <%= form.submit 'Sign Up', class: "button is-primary" %>
+        <% if Clearance.configuration.allow_sign_up? %>
+          <%= link_to t(".sign_in"), sign_in_path, class: "button is-outline" %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>
