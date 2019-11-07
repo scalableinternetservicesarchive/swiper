@@ -33,6 +33,18 @@
     <arrivalphase phase="5" duration="30" unit="second">
       <users arrivalrate="5" unit="second"></users>
     </arrivalphase>
+
+    <arrivalphase phase="5" duration="30" unit="second">
+      <users arrivalrate="10" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="5" duration="30" unit="second">
+      <users arrivalrate="15" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="5" duration="30" unit="second">
+      <users arrivalrate="20" unit="second"></users>
+    </arrivalphase>
   </load>
 
   <options>
