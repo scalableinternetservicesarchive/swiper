@@ -66,4 +66,11 @@ class ListingsController < ApplicationController
         listing.destroy
         redirect_to listings_path, notice: "Deleted Listing for  #{listing.location}"
     end
+
+    def reserve()
+        listing = Listing.find(params[:id])
+        listing.buyer = current_user.id
+        listing.save
+    end
+
 end
