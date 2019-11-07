@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="ec2-44-225-115-93.us-west-2.compute.amazonaws.com" port="80" type="tcp"></server>
+    <server host="ec2-100-21-190-240.us-west-2.compute.amazonaws.com" port="80" type="tcp"></server>
   </servers>
 
 
@@ -46,9 +46,38 @@
 
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
+      <!-- visit the base page -->
       <request>
         <http url='/' version='1.1' method='GET'></http>
       </request>
+
+      <!-- go to login page -->
+      <request>
+        <http url='/sign_in' version='1.1' method='GET'></http>
+      </request>
+
+      <!-- go to to sign_up page and pull authenticity_token-->
+      <request>
+        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content" />
+        <http url='/sign_up' version='1.1' method='GET'></http>
+      </request>
+
+      <!-- wait for up to 2 seconds, user is filling out new user form -->
+      <thinktime value="2" random="true"></thinktime>
+
+      <!-- create a random number to make a unique useremail -->
+      <setdynvars sourcetype="random_number" start="1000" end="9999999">
+        <var name="random_user_email" />
+      </setdynvars>
+
+      <!-- make a user -->
+      <request>
+        <http url='/users' version='1.1' 
+        contents='authenticity_token=%%_authenticity_token%%&amp;user%5Bemail%5D=test%%_random_user_email%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
+        content_type='application/x-www-form-urlencoded' method='POST'></http>
+      </request>
+
+      
     </session>
   </sessions>
 </tsung>
