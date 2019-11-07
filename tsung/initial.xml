@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="swiper-dev.djdchrczj9.us-west-2.elasticbeanstalk.com/" port="80" type="tcp"></server>
+    <server host="ec2-44-225-50-253.us-west-2.compute.amazonaws.com" port="80" type="tcp"></server>
   </servers>
 
 
@@ -58,7 +58,7 @@
 
       <!-- go to to sign_up page and pull authenticity_token-->
       <request>
-        <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content" />
+        <dyn_variable name="authenticity_token"></dyn_variable>
         <http url='/sign_up' version='1.1' method='GET'></http>
       </request>
 
@@ -89,3 +89,5 @@
     </session>
   </sessions>
 </tsung>
+
+s6Ek71s9zDqqB+RcjVBL6mCtSWb8dW10ijhI6Y4WElB0eeyy/dl9NyaIthj+Dfq1/zBpnQ1fITgDfngIoWqfpg==
