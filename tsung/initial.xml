@@ -73,7 +73,7 @@
       <!-- make a user -->
       <request subst="true">
         <http url='/users' version='1.1' 
-        contents='authenticity_token=%%_authenticity_token%%&amp;user%5Bemail%5D=test%%_random_user_email%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
+        contents='authenticity_token=%%_authenticity_token%%&amp;user%5Bemail%5D=test%%_tsung_userid%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
         content_type='application/x-www-form-urlencoded' method='POST'></http>
       </request>
 
