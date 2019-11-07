@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="ec2-100-21-190-240.us-west-2.compute.amazonaws.com" port="80" type="tcp"></server>
+    <server host="swiper-dev.djdchrczj9.us-west-2.elasticbeanstalk.com/" port="80" type="tcp"></server>
   </servers>
 
 
@@ -71,7 +71,7 @@
       </setdynvars>
 
       <!-- make a user -->
-      <request>
+      <request subst="true">
         <http url='/users' version='1.1' 
         contents='authenticity_token=%%_authenticity_token%%&amp;user%5Bemail%5D=test%%_random_user_email%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
         content_type='application/x-www-form-urlencoded' method='POST'></http>
