@@ -62,6 +62,7 @@
       <!-- go to to sign_up page and pull authenticity_token-->
       <request>
         <dyn_variable name="authenticity_token"></dyn_variable>
+        <dyn_variable name="cookie" re="Set-Cookie:.*?(_swiper_session=.*?);.*?\r"></dyn_variable>
         <http url='/sign_up' version='1.1' method='GET'></http>
       </request>
 
@@ -72,7 +73,9 @@
       <request subst="true">
         <http url='/users' version='1.1' 
         contents='authenticity_token=%%_authenticity_token%%&amp;user%5Bemail%5D=test%%_tsung_userid%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
-        content_type='application/x-www-form-urlencoded' method='POST'></http>
+        content_type='application/x-www-form-urlencoded' method='POST'>
+        <http_header name="Cookie" value="%%_cookie%%" />
+        </http>
       </request>
 
       <!-- Uncomment the following to debug print your dynamic variables  -->
@@ -87,5 +90,3 @@
     </session>
   </sessions>
 </tsung>
-
-s6Ek71s9zDqqB+RcjVBL6mCtSWb8dW10ijhI6Y4WElB0eeyy/dl9NyaIthj+Dfq1/zBpnQ1fITgDfngIoWqfpg==
