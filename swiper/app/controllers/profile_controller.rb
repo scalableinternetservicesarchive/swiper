@@ -6,6 +6,6 @@ class ProfileController < ApplicationController
         redirect_to root_path unless @user == current_user
         @listings = @user.listings
 
-        @transactions = ActiveRecord::Base.connection.exec_query("SELECT * FROM listings WHERE buyer = #{params[:id]};")
+        @transactions = Listing.find_by_sql("SELECT * FROM listings WHERE buyer = #{params[:id]};")
     end
 end
