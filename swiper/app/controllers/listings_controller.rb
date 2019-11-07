@@ -69,6 +69,9 @@ class ListingsController < ApplicationController
 
     def reserve()
         listing = Listing.find(params[:id])
+        if listing.buyer != nil
+            redirect_to listing_path(@listing, :id => params[:id]), alert: "This listing has already been reserved"
+        end
         listing.buyer = current_user.id
         listing.save
     end
