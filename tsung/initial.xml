@@ -77,6 +77,14 @@
         content_type='application/x-www-form-urlencoded' method='POST'></http>
       </request>
 
+      <!-- Uncomment the following to debug print your dynamic variables  -->
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+        io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+        ok end.">
+        <var name="dump" />
+      </setdynvars>
+
+
       
     </session>
   </sessions>
