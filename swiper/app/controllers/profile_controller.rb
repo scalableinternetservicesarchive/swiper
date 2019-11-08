@@ -5,5 +5,7 @@ class ProfileController < ApplicationController
         @user = User.find(params[:id])
         redirect_to root_path unless @user == current_user
         @listings = @user.listings
+
+        @transactions = Listing.find_by_sql("SELECT * FROM listings WHERE buyer = #{params[:id]};")
     end
 end

@@ -66,4 +66,14 @@ class ListingsController < ApplicationController
         listing.destroy
         redirect_to listings_path, notice: "Deleted Listing for  #{listing.location}"
     end
+
+    def reserve()
+        listing = Listing.find(params[:id])
+        if listing.buyer != nil
+            redirect_to listing_path(@listing, :id => params[:id]), alert: "This listing has already been reserved"
+        end
+        listing.buyer = current_user.id
+        listing.save
+    end
+
 end
