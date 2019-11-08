@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
-<tsung loglevel="notice">
+<tsung loglevel="debug" dumptraffic="true">
 
   <!-- Client side setup -->
   <clients>
@@ -9,42 +9,52 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="ec2-44-225-50-253.us-west-2.compute.amazonaws.com" port="80" type="tcp"></server>
+    <server host="localhost.charlesproxy.com" port="3000" type="tcp"></server>
   </servers>
 
 
   <load>
-    <arrivalphase phase="1" duration="30" unit="second">
+    <arrivalphase phase="1" duration="1" unit="second">
       <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="2" duration="30" unit="second">
+
+    <arrivalphase phase="2" duration="15" unit="second">
       <users arrivalrate="2" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="3" duration="30" unit="second">
+    <arrivalphase phase="3" duration="15" unit="second">
       <users arrivalrate="3" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="4" duration="30" unit="second">
+    <arrivalphase phase="4" duration="15" unit="second">
       <users arrivalrate="4" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="5" duration="30" unit="second">
+    <arrivalphase phase="5" duration="15" unit="second">
       <users arrivalrate="5" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="6" duration="30" unit="second">
+    <arrivalphase phase="6" duration="15" unit="second">
       <users arrivalrate="10" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="7" duration="30" unit="second">
+    <arrivalphase phase="7" duration="15" unit="second">
       <users arrivalrate="15" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="8" duration="30" unit="second">
+    <arrivalphase phase="8" duration="15" unit="second">
       <users arrivalrate="20" unit="second"></users>
     </arrivalphase>
+
+    <arrivalphase phase="9" duration="15" unit="second">
+      <users arrivalrate="25" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="10" duration="15" unit="second">
+      <users arrivalrate="50" unit="second"></users>
+    </arrivalphase>
+    
   </load>
 
   <options>
@@ -74,22 +84,70 @@
       <!-- go to to sign_up page and pull authenticity_token-->
       <request>
         <dyn_variable name="authenticity_token"></dyn_variable>
-        <dyn_variable name="cookie" re="Set-Cookie:.*?(_swiper_session=.*?);.*?\r"></dyn_variable>
-        <http url='/sign_up' version='1.1' method='GET'></http>
-      </request>
-
-      <!-- wait for up to 2 seconds, user is filling out new user form -->
-      <thinktime value="2" random="true"></thinktime>
-
-      <!-- make a user -->
-      <request subst="true">
-        <http url='/users' version='1.1' 
-        contents='authenticity_token=%%_authenticity_token%%&amp;user%5Bemail%5D=test%%_tsung_userid%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
-        content_type='application/x-www-form-urlencoded' method='POST'>
-        <http_header name="Cookie" value="%%_cookie%%" />
+        <http url='/sign_up' version='1.1' method='GET'>
+          <http_header name="Cookie" value="%%_cookie%%" />
         </http>
       </request>
 
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+
+      <!-- wait for up to 2 seconds, user is filling out new user form -->
+      <thinktime value="2" random="true" ></thinktime>
+
+      <!-- make a user -->
+      <request subst="true">
+        <http url='/users' version='1.1'
+        contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%_tsung_userid%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
+        content_type='application/x-www-form-urlencoded' method='POST'>
+        <!-- <http_header name="Cookie" value="%%_cookie-session%%" /> -->
+        </http>
+      </request>
+
+      <!-- visit the listings page -->
+      <request>
+        <http url='/listings' version='1.1' method='GET'></http>
+      </request>
+
+      <!-- filter out only dining halls or alacarte-->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Choice = rand:uniform(2), 
+        if 
+          Choice == 1 -> 
+            &quot;filter%5BBPlate%5D=1&amp;filter%5BCovel%5D=1&amp;filter%5BDeNeve%5D=1&amp;filter%5BFeast%5D=1&quot;;
+          true -> 
+            &quot;filter%5BBCafe%5D=1&amp;filter%5BCafe1919%5D=1&amp;filter%5BRende%5D=1&amp;filter%5BStudy%5D=1&quot;
+        end end.">
+				<var name="location_query" />
+			</setdynvars>
+
+      <!-- random amount 4.25-8 -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Price = 4 + 0.25 * rand:uniform(16), 
+        &quot;filter%5Bprice%5D=&quot; ++ float_to_list(Price,[{decimals, 2}]) end.">
+				<var name="price_query" />
+			</setdynvars>
+
+      <!-- random amount 1-5 -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        &quot;filter%5Bamount%5D=&quot; ++ integer_to_list(rand:uniform(5))
+        end.">
+				<var name="amount_query" />
+			</setdynvars>
+
+      <!-- try filtering the page -->
+      <request subst="true">
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;commit=Filter' version='1.1' method='GET'></http>
+      </request>
+
+    
       <!-- Uncomment the following to debug print your dynamic variables  -->
       <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
         io:format([126, $p, 126, $n, 126, $n], [DynVars]),
