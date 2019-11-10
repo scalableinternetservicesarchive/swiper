@@ -1,9 +1,10 @@
-<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
+<nav class="navbar is-fixed-top is-link" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand" style="height: 4rem;">
     <%= link_to '/', class: "navbar-item" do%>
-      <span class="title is-2" style="color:white;">🦊 Swiper</span> <!-- TODO: Add real logo -->
+      <span class="title is-3" style="color: white;">🦊 Swiper</span> <!-- TODO: Add real logo -->
     <% end %>
 
+    
   </div>
   <div class="navbar-menu">
     <div class="navbar-start">
@@ -13,9 +14,6 @@
           <%= link_to 'Buy Swipes', listings_path, class: "navbar-item" %>
           <%= link_to 'Sell Swipes', new_listing_path, class: "navbar-item" %>
           <%= link_to 'My Profile', profile_path(current_user.id), class: "navbar-item" %>
-
-          <!-- TODO: Setup link to view user's stage 2 listings -->
-          <a class="navbar-item">My Orders</a>
         <% end %>
     </div>
   </div>
@@ -30,9 +28,6 @@
 
               <div class="navbar-dropdown">
                 <!-- TODO: Replace links with link_to correct pages -->
-                <a class="navbar-item">
-                  Profile
-                </a>
                 <a class="navbar-item">
                   Settings
                 </a>

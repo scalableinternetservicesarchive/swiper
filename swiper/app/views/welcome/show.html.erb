@@ -1,78 +1,77 @@
 <!-- TODO: put divs inside link-to respective filtered listing pages -->
+<div class="columns">
+  <div class="column">
+    <%= link_to listings_path(:filter => {'DeNeve' => '1'}), class: "notification is-link home-tile level" do%>
+      <span class="level-left">
+            <p class="level-item title is-2">De Neve</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('DeNeve')%></p>
+      </span>
+    <% end %>
+    
+    <%= link_to listings_path(:filter => {'Covel' => '1'}), class: "notification is-link home-tile level" do%>
+      <span class="level-left">
+          <p class="level-item title is-2">Covel</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('Covel')%></p>
+      </span>
+    <% end %>
 
-<div class="tile is-ancestor">
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-link">
-        <div class="level">
-            <p class="level-left title is-2">De Neve</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
-  </div>
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-link">
-        <div class="level">
-            <p class="level-left title is-2">Covel</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
-  </div>
-</div>
+    <%= link_to listings_path(:filter => {'Cafe1919' => '1'}), class: "notification is-primary home-tile level" do%>
+      <span class="level-left">
+          <p class="level-item title is-2">Café 1919</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('Cafe1919')%></p>
+      </span>
+    <% end %>
 
+    <%= link_to listings_path(:filter => {'Rende' => '1'}), class: "notification is-primary home-tile level" do%>
+      <span class="level-left">
+          <p class="level-item title is-2">Rendezvous</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('Rende')%></p>
+      </span>
+    <% end %>
+  </div>
+  <div class="column">
+    <%= link_to listings_path(:filter => {'Feast' => '1'}), class: "notification is-link home-tile level" do%>
+      <span class="level-left">
+          <p class="level-item title is-2">Feast at Rieber</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('Feast')%></p>
+      </span>
+    <% end %>
 
-<div class="tile is-ancestor">
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-link">
-        <div class="level">
-            <p class="level-left title is-2">Feast at Rieber</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
-  </div>
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-link">
-        <div class="level">
-            <p class="level-left title is-2">Bruin Plate</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
-  </div>
-</div>
+    <%= link_to listings_path(:filter => {'BPlate' => '1'}), class: "notification is-link home-tile level" do%>
+      <span class="level-left">
+          <p class="level-item title is-2">Bruin Plate</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('BPlate')%></p>
+      </span>
+    <% end %>
 
-<div class="tile is-ancestor">
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-primary">
-        <div class="level">
-            <p class="level-left title is-2">Café 1919</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
-  </div>
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-primary">
-        <div class="level">
-            <p class="level-left title is-2">Bruin Café</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
-  </div>
-</div>
+    <%= link_to listings_path(:filter => {'BCafe' => '1'}), class: "notification is-primary home-tile level" do%>
+      <span class="level-left">
+          <p class="level-item title is-2">Bruin Café</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('BCafe')%></p>
+      </span>
+    <% end %>
 
-<div class="tile is-ancestor">
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-primary">
-        <div class="level">
-            <p class="level-left title is-2">Rendezvous</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
-  </div>
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-primary">
-        <div class="level">
-            <p class="level-left title is-2">Study at Hedrick</p>
-            <p class="level-right title is-2">$4.25</p>
-        </div>
-    </div>
+    <%= link_to listings_path(:filter => {'Study' => '1'}), class: "notification is-primary home-tile level" do%>
+      <span class="level-left">
+          <p class="level-item title is-2">Study at Hedrick</p>
+      </span>
+      <span class="level-right">
+        <p class="level-item title is-2">$<%= lowest_price('Study')%></p>
+      </span>
+    <% end %>
   </div>
 </div>

@@ -1,12 +1,12 @@
 <div class="filter">
-  <%= form_with(path: listings_path, method: :get, scope: :filter, remote: true) do |f|%>
+  <%= form_with path: listings_path, method: :get, scope: :filter do |f|%>
   <div class="filter_section">
     <%= f.label :location, class: "field_label"%>
     <% Listing.locations.keys.each do |key| %>
-    <div class="location_checkbox">
-      <%= f.check_box key, checked: true%>
-      <%= f.label "#{key}_label", key %>
-    </div>
+      <div class="location_checkbox">
+        <%= f.check_box key, {checked: !params[:filter] || params[:filter][key] == '1'}%>
+        <%= f.label "#{key}_label", key %>
+      </div>
     <%end%>
 
     <div class="filter_section">
@@ -28,3 +28,4 @@
     <%= f.submit "Filter", class: "btn btn-primary"%>
     <% end %>
   </div>
+</div>
