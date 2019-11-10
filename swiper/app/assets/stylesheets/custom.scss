@@ -1,5 +1,5 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
 
 .listings {
   list-style: none;
@@ -11,8 +11,10 @@
   }
 }
 
-
-input, textarea, select, .uneditable-input { 
+input,
+textarea,
+select,
+.uneditable-input {
   border: 1px solid #bbb;
   margin-bottom: 15px;
 }
@@ -21,4 +23,7 @@ input {
   height: auto !important;
 }
 
-  
+.home-tile {
+  display: block;
+  height: 12rem;
+}

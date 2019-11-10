@@ -8,13 +8,14 @@ class ListingsController < ApplicationController
     def filter_listings(filter_params)
         selected_locations = []
         Listing.locations.keys.each do |loc|
-            if !filter_params[loc] || filter_params[loc] == '1'
+            if filter_params[loc] == '1'
                 selected_locations << loc
             end
         end
+        
         filtered = Listing.where(location: selected_locations)
-        filtered = filtered.where("price <= ?", filter_params[:price]) unless filter_params[:price].empty?
-        filtered = filtered.where("? <= amount", filter_params[:amount]) unless filter_params[:amount].empty?
+        filtered = filtered.where("price <= ?", filter_params[:price]) unless !filter_params[:price] || filter_params[:price].empty?
+        filtered = filtered.where("? <= amount", filter_params[:amount]) unless !filter_params[:amount] || filter_params[:amount].empty?
         return filtered
     end
 
