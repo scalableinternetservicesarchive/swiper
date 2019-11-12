@@ -26,12 +26,17 @@
 
 <div>
     <ul class="listing-actions">
-        <li><%= link_to "Back", listings_path %></li>
         <li><%= link_to "Edit", edit_listing_path(@listing) %></li>
         <li><%= link_to "Delete", listing_path(@listing), data: {
             confirm: "Are you sure you want to delete this listing?",
         }, method: :delete %></li>
     </ul>
-    <%= button_to "Reserve", reserve_listing_path(@listing), data: {
-            confirm: "Are you sure you want to reserve this listing?",} %>
+
+    <% if current_user.id == @listing.buyer %>
+      <button class="button is-success" disabled>Reserved</button>
+    <% elsif current_user.id != @listing.user_id %>
+      <%= button_to "Reserve", reserve_listing_path(@listing), data: {
+        confirm: "Are you sure you want to reserve this listing?",}, class: "button" %>
+    <% else %>
+    <% end %>
 </div>
