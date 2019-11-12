@@ -1,7 +1,7 @@
 module ApplicationHelper
     def lowest_price(location)
-        listings = Listing.where(location: location, buyer: nil).order(:price).first
-        return number_with_precision(listings, precision: 2) if listings 
+        listing = Listing.where(location: location, buyer: nil).order(:price).first
+        return number_with_precision(listing.price, precision: 2) if listing
         0
     end
 
