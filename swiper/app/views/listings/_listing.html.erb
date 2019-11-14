@@ -6,6 +6,12 @@
   <td class="price">
     $<%= number_with_precision(listing.price, precision: 2)%>
   </td>
+  <td class="from">
+    <%= listing.start_time.strftime("%l:%M %p") %>
+  </td>
+  <td class="to">
+    <%= listing.end_time.strftime("%l:%M %p") %>
+  </td>
   <td class="amount">
     <%= listing.amount%>
   </td>

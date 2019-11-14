@@ -1,34 +1,40 @@
 <div class="section filter">
-  <span class="title is-3">Filter</span>
-  <%= form_with path: listings_path, method: :get, scope: :filter do |f|%>
-  <div class="filter_section">
-    <%= f.label :location, class: "label"%>
-    <% Listing.locations.keys.each do |key| %>
+  <div class="box">
+    <span class="title is-3">Filter</span>
+    <%= form_with path: listings_path, method: :get, scope: :filter do |f|%>
+    <div class="filter_section">
+      <%= f.label :location, class: "label"%>
+      <% Listing.locations.keys.each do |key| %>
+        <div class="field">
+          <%= f.check_box key, {checked: !params[:filter] || params[:filter][key] == '1'}%>
+          <%= f.label "#{key}_label", key %>
+        </div>
+      <%end%>
+
       <div class="field">
-        <%= f.check_box key, {checked: !params[:filter] || params[:filter][key] == '1'}%>
-        <%= f.label "#{key}_label", key %>
+        <%= f.label :price, class: "label"%>
+        <%= f.number_field :price, placeholder: "Max price", step: 0.25, class: "input"%>
       </div>
-    <%end%>
 
-    <div class="field">
-      <%= f.label :price, class: "label"%>
-      <%= f.number_field :price, placeholder: "Max price", step: 0.25, class: "input"%>
-    </div>
+      <div class="field ">
+        <%= f.label :time, class: "label"%>
+        <div class="is-grouped">
+        
+        <%= f.time_select :earliest, {minute_step: 15}, class: "select"%>
+        to 
+        <%= f.time_select :latest, {minute_step: 15}, class: "select"%>
+        </div>
+      </div>
 
-    <div class="field">
-      <%= f.label :time, class: "label"%>
-      <%= f.time_field :earliest, step: 900, placeholder: "8:00"%>
-      <%= f.time_field :latest, step: 900%>
-    </div>
+      <div class="field">
+        <%= f.label :amount, class: "label"%>
+        <%= f.number_field :amount, step: 1, placeholder: "Min # of swipes", class: "input"%>
+      </div>
 
-    <div class="field">
-      <%= f.label :amount, class: "label"%>
-      <%= f.number_field :amount, step: 1, placeholder: "Min # of swipes", class: "input"%>
+      <div class="control">
+        <%= f.submit "Filter", class: "button is-primary"%>
+      </div>
+      <% end %>
     </div>
-
-    <div class="control">
-      <%= f.submit "Filter", class: "button is-primary"%>
-    </div>
-    <% end %>
   </div>
 </div>

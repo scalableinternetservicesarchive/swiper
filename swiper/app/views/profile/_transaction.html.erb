@@ -1,7 +1,7 @@
 <tr class="transaction" id="transaction-<%= transaction.id%>">
   <%# <td> <%= transaction.id%>
   <td class="location">
-    <%= link_to transaction.location, transaction_path(transaction) %>
+    <%= link_to location_to_string(transaction.location), transaction_path(transaction) %>
   </td>
   <td class="price">
     $<%= number_with_precision(transaction.price, precision: 2)%>

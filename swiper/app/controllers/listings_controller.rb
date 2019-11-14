@@ -13,7 +13,7 @@ class ListingsController < ApplicationController
             end
         end
         
-        filtered = Listing.where(location: selected_locations)
+        filtered = Listing.where(location: selected_locations, buyer: nil)
         filtered = filtered.where("price <= ?", filter_params[:price]) unless !filter_params[:price] || filter_params[:price].empty?
         filtered = filtered.where("? <= amount", filter_params[:amount]) unless !filter_params[:amount] || filter_params[:amount].empty?
         return filtered
@@ -24,7 +24,7 @@ class ListingsController < ApplicationController
         if params[:filter]
             @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(:price)
         else
-            @listings = Listing.paginate(page: params[:page]).order(:price)
+            @listings = Listing.where(buyer: nil).paginate(page: params[:page]).order(:price)
         end
     end
 

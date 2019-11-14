@@ -1,14 +1,34 @@
-<h1>Listings</h1>
-
-<div class="listings">
-    <table>
-        <%= render @listings%>
-    </table>
-</div>
-
-<h1>Transactions</h1>
-<div class="transactions">
-    <table>
-        <%= render @transactions %>
-    <table>
+<div class="columns">
+    
+    <div class="column">
+        <span class="title is-3">My Listings</span>
+        <table class="table is-fullwidth is-hoverable">
+            <thead class="thead">
+                <th>Location</th>
+                <th>Price</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+            </thead>
+            <tbody>
+                <%= render @listings%>
+            </tbody>
+        </table>
+    </div>
+    <div class="column is-one-fifth"></div>
+    <div class="column ">
+        <span class="title is-3">My Transactions</span>
+        <table class="table is-fullwidth is-hoverable">
+            <thead class="thead">
+                <th>Location</th>
+                <th>Price</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+            </thead>
+            <tbody>
+                <%= render @transactions%>
+            </tbody>
+        </table>
+    </div>
 </div>
