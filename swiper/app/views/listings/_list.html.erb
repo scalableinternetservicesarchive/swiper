@@ -1,4 +1,14 @@
-<table>
-    <%= render @listings%>
+<table class="table is-fullwidth is-hoverable">
+    <thead class="thead">
+        <th>Dining Hall</th>
+        <th>Price</th>
+        <th>Time</th>
+    </thead>
+    <tbody>
+        <%= render @listings%>
+    </tbody>
+    
 </table>
-<%= will_paginate @listings%>
+<tfoot class="">
+        <%= will_paginate @listings, renderer: BulmaPagination::Rails, class: "is-centered"%>
+</tfoot>
