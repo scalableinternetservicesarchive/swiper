@@ -24,7 +24,11 @@ class ListingsController < ApplicationController
         if params[:filter]
             @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(:price)
         else
+<<<<<<< HEAD
             @listings = Listing.where(buyer: nil).paginate(page: params[:page]).order(:price)
+=======
+            @listings = Listing.paginate(page: params[:page]).where(buyer: nil).order(:price)
+>>>>>>> master
         end
     end
 

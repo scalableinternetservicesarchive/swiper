@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="columns">
     
     <div class="column">
@@ -31,4 +32,20 @@
             </tbody>
         </table>
     </div>
+=======
+<h1>Listings</h1>
+
+<div class="listings">
+    <table>
+        <%= render @listings%>
+    </table>
+</div>
+
+<h1>Transactions</h1>
+
+<div class="listings">
+    <table>
+        <%= render @transactions %>
+    <table>
+>>>>>>> master
 </div>
