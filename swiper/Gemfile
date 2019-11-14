@@ -9,6 +9,8 @@ gem 'rails', '~> 6.0.0'
 gem 'puma', '~> 3.11'
 # Styling with bulma
 gem 'bulma-rails', '~> 0.7.5'
+# Bulma pagination style
+gem 'will_paginate-bulma'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
