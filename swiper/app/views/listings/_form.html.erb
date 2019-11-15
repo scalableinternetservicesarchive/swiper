@@ -11,32 +11,34 @@
 <%= form_for @listing do |form| %>
     <div id="clearance" class="new-listing-time columns" style="padding-top: 20px;">
         <div class="column is-one-half">
-            <div class="form-group">
+            <div class="field">
                 <%= form.label :start_time, 'From', class: "label" %>
-                <%= form.time_select :start_time %>
+                <%= form.time_select :start_time, {minute_step: 15} %>
             </div>
         </div>
 
         <div class="column is-one-half">
-            <div class="form-group">
+            <div class="field">
                 <%= form.label :end_time, 'To', class: "label" %>
-                <%= form.time_select :end_time %>
+                <%= form.time_select :end_time, {minute_step: 15}%>
             </div>
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="field">
         <%= form.label :price, class: "label" %>
-        <%= form.text_field :price, type: 'number', min: '1.00', step: '0.25', class: "input" %>
+        <%= form.text_field :price, type: 'number', min: '.50', step: '0.25', class: "input" %>
     </div>
 
-    <div class="form-group">
+    <div class="field">
         <%= form.label :location, class: "label" %>
-        <%= form.text_field :location, class: "input" %>
+        <div class="select">
+            <%= form.select :location, Listing.locations.keys, class: "select" %>
+        </div>
     </div>
 
-    <div class="form-group">
-        <%= form.label :description, class: "label" %>
+    <div class="field">
+        <%= form.label "Comment", class: "label" %>
         <%= form.text_field :description, class: "input" %>
     </div>
     
