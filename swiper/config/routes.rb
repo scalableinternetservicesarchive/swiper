@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     controller: 'clearance/sessions',
     only: [:create]
   resources :users,
-    controller: 'clearance/users',
+    controller: 'users',
     only: Clearance.configuration.user_actions do
       resource :password,
         controller: 'clearance/passwords',
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get '/reset_password' => 'clearance/passwords#new', as: 'reset_password'
 
   if Clearance.configuration.allow_sign_up?
-    get '/sign_up' => 'clearance/users#new', as: 'sign_up'
+    get '/sign_up' => 'users#new', as: 'sign_up'
   end
   
   root to: "welcome#show"

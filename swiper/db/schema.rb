@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_04_050648) do
+ActiveRecord::Schema.define(version: 2019_11_16_203024) do
 
   create_table "listings", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -36,6 +36,13 @@ ActiveRecord::Schema.define(version: 2019_11_04_050648) do
     t.string "encrypted_password", limit: 128, null: false
     t.string "confirmation_token", limit: 128
     t.string "remember_token", limit: 128, null: false
+    t.boolean "cash", default: false
+    t.boolean "venmo", default: false
+    t.boolean "paypal", default: false
+    t.boolean "cashapp", default: false
+    t.string "contact"
+    t.float "rating"
+    t.integer "rating_count"
     t.index ["email"], name: "index_users_on_email"
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
