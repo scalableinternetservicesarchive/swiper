@@ -1,11 +1,41 @@
-
   <div class="field">
-    <%= form.label :email, class: "label"%>
+    <%= form.label :email, class: "label" %>
     <%= form.text_field :email, type: 'email', class: "input" %>
   </div>
 
   <div class="field">
-    <%= form.label :password, class: "label"%>
-    <%= form.password_field :password, class: "input"%>
-    
+    <%= form.label :password, class: "label" %>
+    <%= form.password_field :password, class: "input" %>
   </div>
+    
+  <span class="title is-5">Accepted payment methods:</span>
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <%= form.check_box :cash, class: "checkbox" %>
+        <span class="title is-3">Cash</span>
+      </div>
+      
+      <div class="field">
+        <%= form.check_box :venmo, class: "checkbox" %>
+        <%= image_tag "venmo.png", size: 150, alt: "Venmo" %>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="field">
+        <%= form.check_box :cashapp, class: "checkbox" %>
+        <%= image_tag "cashapp.png", size: 150, alt: "Cash App" %>
+      </div>
+
+      <div class="field">
+        <%= form.check_box :paypal, class: "checkbox" %>
+        <%= image_tag "paypal.png", size: 150, alt: "PayPal" %>
+      </div>
+    </div>
+  </div>
+
+<div class="field">
+  <%= form.label 'Contact info', class: "label" %>
+  <%= form.text_field :contact, class: "input" %>
+</div>
