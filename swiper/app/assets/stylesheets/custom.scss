@@ -1,0 +1,40 @@
+/* .listings {
+  list-style: none;
+  padding: 0;
+
+  td {
+    padding: 10px;
+    border-top: 1px solid #e8e8e8;
+  }
+}
+
+input,
+textarea,
+select,
+.uneditable-input {
+  border: 1px solid #bbb;
+  margin-bottom: 15px;
+} */
+
+input {
+  height: auto !important;
+}
+
+.home-tile {
+  display: block;
+  height: 12rem;
+}
+
+.filter {
+  display: block;
+  margin-top: 4rem;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.padded-image {
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+}

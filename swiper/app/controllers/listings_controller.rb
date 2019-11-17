@@ -1,4 +1,25 @@
 class ListingsController < ApplicationController
+
+    private
+    def listing_params
+        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price, :reserved_amount, :reserved_time)
+    end
+
+    def filter_listings(filter_params)
+        selected_locations = []
+        Listing.locations.keys.each do |loc|
+            if filter_params[loc] == '1'
+                selected_locations << loc
+            end
+        end
+        
+        filtered = Listing.where(location: selected_locations, buyer: nil)
+        filtered = filtered.where("price <= ?", filter_params[:price]) unless !filter_params[:price] || filter_params[:price].empty?
+        filtered = filtered.where("? <= amount", filter_params[:amount]) unless !filter_params[:amount] || filter_params[:amount].empty?
+        return filtered
+    end
+
+    public
     def index
         @listings = Listing.all
     end
@@ -43,7 +64,20 @@ class ListingsController < ApplicationController
         redirect_to listings_path, notice: "Deleted Listing: #{listing.name}"
     end
 
-    private
+    def reserve
+        @listing = Listing.find(params[:id])
+        
+        if @listing.buyer != nil
+            redirect_to listing_path(@listing, :id => params[:id]), alert: "This listing cannot be reserved at this time"
+        end
+
+        if @listing.update({:buyer => current_user.id, :reserved_amount => :reserved_amount, :reserved_time => :reserved_time})
+            redirect_to listing_path(@listing), notice: "Listing reserved!"
+        else
+            @errors = @listing.errors.full_messages
+            render :show
+        end
+    end
 
     def listing_params
         params.require(:listing).permit(:name, :description)
