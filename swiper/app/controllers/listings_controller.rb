@@ -21,10 +21,14 @@ class ListingsController < ApplicationController
 
     public
     def index
+        sort = "price ASC"
+        if params[:sort]
+            sort = params[:sort]
+        end
         if params[:filter]
-            @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(:price)
+            @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(sort)
         else
-            @listings = Listing.where(buyer: nil).paginate(page: params[:page]).order(:price)
+            @listings = Listing.where(buyer: nil).paginate(page: params[:page]).order(sort)
         end
     end
 
