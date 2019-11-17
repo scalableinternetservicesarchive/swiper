@@ -2,83 +2,83 @@
     <thead class="thead">
         <!-- Default sort by price ASC -->
         <% if params[:sort].nil? || params[:sort] == "price ASC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price DESC") %> &uarr;</th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price DESC"})) %> &uarr;</th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by price DESC -->
         <% elsif params[:sort] == "price DESC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %> &darr;</th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %> &darr;</th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by location ASC -->
         <% elsif params[:sort] == "location ASC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location DESC") %> &uarr;</th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location DESC"})) %> &uarr;</th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by location DESC -->
         <% elsif params[:sort] == "location DESC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %> &darr;</th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %> &darr;</th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by from ASC -->
         <% elsif params[:sort] == "start_time ASC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time DESC") %>&uarr;</th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time DESC"})) %>&uarr;</th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by from DESC -->
         <% elsif params[:sort] == "start_time DESC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %>&darr;</th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %>&darr;</th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by to ASC -->
         <% elsif params[:sort] == "end_time ASC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time DESC") %>&uarr;</th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time DESC"})) %>&uarr;</th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by to DESC -->
         <% elsif params[:sort] == "end_time DESC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %>&darr;</th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %></th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %>&darr;</th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %></th>
 
         <!-- Sort by amount ASC -->
         <% elsif params[:sort] == "amount ASC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount DESC") %>&uarr;</th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount DESC"})) %>&uarr;</th>
 
         <!-- Sort by amount DESC -->
         <% elsif params[:sort] == "amount DESC" %>
-            <th><%= link_to "Location", listings_path(:sort => "location ASC") %></th>
-            <th><%= link_to "Price", listings_path(:sort => "price ASC") %></th>
-            <th><%= link_to "From", listings_path(:sort => "start_time ASC") %></th>
-            <th><%= link_to "To", listings_path(:sort => "end_time ASC") %></th>
-            <th><%= link_to "Amount", listings_path(:sort => "amount ASC") %>&darr;</th>
+            <th><%= link_to "Location", listings_path(request.query_parameters.merge({:sort => "location ASC"})) %></th>
+            <th><%= link_to "Price", listings_path(request.query_parameters.merge({:sort => "price ASC"})) %></th>
+            <th><%= link_to "From", listings_path(request.query_parameters.merge({:sort => "start_time ASC"})) %></th>
+            <th><%= link_to "To", listings_path(request.query_parameters.merge({:sort => "end_time ASC"})) %></th>
+            <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %>&darr;</th>
 
         <% end %>
         
