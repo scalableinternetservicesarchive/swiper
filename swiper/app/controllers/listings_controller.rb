@@ -2,7 +2,7 @@ class ListingsController < ApplicationController
 
     private
     def listing_params
-        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price)
+        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price, :reserved_amount, :reserved_time)
     end
 
     def filter_listings(filter_params)
@@ -68,14 +68,19 @@ class ListingsController < ApplicationController
         redirect_to listings_path, notice: "Deleted Listing for  #{listing.location}"
     end
 
-    def reserve()
-        listing = Listing.find(params[:id])
-        if listing.buyer != nil
+    def reserve
+        @listing = Listing.find(params[:id])
+        
+        if @listing.buyer != nil
             redirect_to listing_path(@listing, :id => params[:id]), alert: "This listing cannot be reserved at this time"
         end
-        listing.buyer = current_user.id
-        listing.save
-        redirect_to listing_path(@listing, :id => params[:id])
+
+        if @listing.update({:buyer => current_user.id, :reserved_amount => :reserved_amount, :reserved_time => :reserved_time})
+            redirect_to listing_path(@listing), notice: "Listing reserved!"
+        else
+            @errors = @listing.errors.full_messages
+            render :show
+        end
     end
 
 end

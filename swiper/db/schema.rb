@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_16_203024) do
+ActiveRecord::Schema.define(version: 2019_11_17_032030) do
 
   create_table "listings", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2019_11_16_203024) do
     t.datetime "end_time"
     t.text "description"
     t.integer "buyer"
+    t.datetime "reserved_time"
+    t.integer "reserved_amount"
     t.index ["price"], name: "index_listings_on_price"
     t.index ["user_id"], name: "index_listings_on_user_id"
     t.index ["user_id"], name: "index_listings_on_user_id_and_name"

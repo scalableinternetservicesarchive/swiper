@@ -7,7 +7,7 @@
           <span class="title is-2 ">Listing</span>
         </div>
         <div class="level-right field is-grouped">
-          <% if current_user.listings.exists?(params[:id])  %>
+          <% if @listing.user_id == current_user.id %>
             <div class="control">
               <%= link_to "Edit", edit_listing_path(@listing), class: "button is-outlined is-primary" %>
             </div>
@@ -19,41 +19,106 @@
           <% end %>
         </div>
       </div>
-      <%# <div> <%= listing.id%>
-      <div class="field">
-        <span class="title is-6">Location: </span>
-        <%= location_to_string(@listing.location) %>
-      </div>
-      <div class="field">
-        <span class="title is-6">Price: </span>
-        $<%= number_with_precision(@listing.price, precision: 2)%>
-      </div>
-      <div class="field">
-        <span class="title is-6">Amount: </span>
-        <%= @listing.amount%>
+      <div class="columns">
+        <div class="column">
+          <%# <div> <%= listing.id%>
+          <div class="field">
+            <span class="title is-6">Location: </span>
+            <%= location_to_string(@listing.location) %>
+          </div>
+          <div class="field">
+            <span class="title is-6">Price: </span>
+            $<%= number_with_precision(@listing.price, precision: 2)%>
+          </div>
+          <div class="field">
+            <span class="title is-6">Amount available: </span>
+            <%= @listing.amount%>
+          </div>
+
+          <div class="field">
+            <span class="title is-6">Start time:   </span>
+            <%=   @listing.start_time.strftime("%l:%M %p") %>
+          </div>
+                
+          <div class="field">
+              <span class="title is-6">End time:   </span>
+              <%=   @listing.end_time.strftime("%l:%M %p")%>
+          </div>
+
+          <div class="field">
+            <span class="title is-6">Seller contact info: </span>
+            <%= @listing.user.contact %>
+          </div>
+        </div>
+
+        <div class="column">
+          <span class="title is-6">Payment methods:</span><br />
+          <% if @listing.user.cash %>
+            <div class="padded-image">
+              <span class="title is-4">Cash</span><br/>
+            </div>
+          <% end %>
+          
+          <% if @listing.user.venmo %>
+          <%= image_tag "venmo.png", size: 100, alt: "Venmo", class: "padded-image" %>
+          <% end %>
+
+          <% if @listing.user.cashapp %>
+          <%= image_tag "cashapp.png", size: 100, alt: "Cash App", class: "padded-image" %>
+          <% end %>
+
+          <% if @listing.user.paypal %>
+          <%= image_tag "paypal.png", size: 100, alt: "PayPal", class: "padded-image" %>
+          <% end %>
+        </div>
       </div>
 
       <div class="field">
-        <span class="title is-6">Start time:   </span>
-        <%=   @listing.start_time.strftime("%l:%M %p") %>
-      </div>
-             
-      <div class="field">
-          <span class="title is-6">End time:   </span>
-          <%=   @listing.end_time.strftime("%l:%M %p")%>
-      </div>
-
-      <div class="field">
-        <span class="title is-6">Comments: </span>
+        <span class="title is-6">Seller Comments: </span>
         <%= @listing.description%>
       </div>
 
+ 
       <div>
-        <% if current_user.id == @listing.buyer %>
+        <% if @listing.buyer == current_user.id %>
+            <div class="field">
+              <span class="title is-6">Amount reserved: </span>
+              <%= @listing.reserved_amount %>
+            </div>
+
+            <div class="field">
+              <span class="title is-6">Reservation time: </span>
+              <%= @listing.reserved_time%>
+            </div>
+
+        <% end %>
+
+        <% if @listing.buyer != nil %>
           <button class="button is-success" disabled>Reserved</button>
         <% elsif current_user.id != @listing.user_id %>
-          <%= button_to "Reserve", reserve_listing_path(@listing), data: {
-            confirm: "Are you sure you want to reserve this listing?",}, class: "button is-primary" %>
+          <%= form_for @listing, url: reserve_listing_path,  method: "post" do |f|%>
+
+            <div class="field">
+              <%= f.label "Amount to Reserve", class: "label"%>
+              <%= f.number_field :reserved_amount, min: '1', max: @listing.amount, step: '1', class: "input"%>
+            </div>
+
+            <div class="field" style="padding-top: 20px">
+              <%= f.label 'Reservation time', class: "label" %>
+              <%= f.time_select :reserved_time, 
+                  {ampm: true,
+                  start_hour: @listing.start_time.strftime("%k").to_i,
+                  end_hour: @listing.end_time.strftime("%k").to_i,
+                  prompt: true,
+                  minute_step: 15
+                  } %>
+            </div> 
+
+
+
+            <%= f.submit "Reserve",
+              class: "button is-primary" %>
+          <% end %>
         <% else %>
         <% end %>
       </div>
