@@ -1,4 +1,13 @@
 module ApplicationHelper
+    def flash_class(level)
+        case level
+            when 'notice' then "notification is-link"
+            when 'success' then "notification is-success"
+            when 'error' then "notification is-danger"
+            when 'alert' then "notification is-warning"
+        end
+    end
+    
     def lowest_price(location)
         listing = Listing.where(location: location, buyer: nil).order(:price).first
         return number_with_precision(listing.price, precision: 2) if listing

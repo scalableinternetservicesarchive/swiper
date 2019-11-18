@@ -23,6 +23,14 @@
         <div class="column">
           <%# <div> <%= listing.id%>
           <div class="field">
+            <span class="title is-6">Status: </span>
+            <% if @listing.buyer.nil? %>
+              <span class="tag is-light is-medium">Open</span>
+            <% else %>
+              <span class="tag is-dark is-medium">Reserved</span>
+            <% end %>
+          </div>
+          <div class="field">
             <span class="title is-6">Location: </span>
             <%= location_to_string(@listing.location) %>
           </div>
@@ -45,10 +53,12 @@
               <%=   @listing.end_time.strftime("%l:%M %p")%>
           </div>
 
-          <div class="field">
-            <span class="title is-6">Seller contact info: </span>
-            <%= @listing.user.contact %>
-          </div>
+          <% if @listing.user.contact && !@listing.user.contact.empty? %>
+            <div class="field">
+              <span class="title is-6">Seller contact info: </span>
+              <%= @listing.user.contact %>
+            </div>
+          <% end %>
         </div>
 
         <div class="column">
@@ -73,14 +83,16 @@
         </div>
       </div>
 
-      <div class="field">
-        <span class="title is-6">Seller Comments: </span>
-        <%= @listing.description%>
-      </div>
+      <% if @listing.description && !@listing.description.empty? %>
+        <div class="field">
+          <span class="title is-6">Seller Comments: </span>
+          <%= @listing.description%>
+        </div>
+      <% end %>
 
- 
+      <div style="padding-bottom: 1rem;"></div>
       <div>
-        <% if @listing.buyer == current_user.id %>
+        <% if @listing.buyer == current_user.id || (!@listing.buyer.nil? && @listing.user_id == current_user.id )%>
             <div class="field">
               <span class="title is-6">Amount reserved: </span>
               <%= @listing.reserved_amount %>
@@ -96,9 +108,9 @@
         <% if @listing.buyer == current_user.id %>
           <% if !@listing.completed%>
             <%= button_to "Complete", complete_listing_path(@listing), data: {
-                confirm: "Are you sure you want to complete this listing?",}, class: "button" %>
+                confirm: "Are you sure you want to complete this listing?"}, class: "button is-primary" %>
           <% else %>
-            <button class="button is-info" disabled>Completed</button>
+            <button class="button is-link" disabled>Completed</button>
           <% end %>
         <% elsif @listing.buyer != nil %>
           <button class="button is-success" disabled>Reserved</button>
@@ -107,18 +119,18 @@
 
             <div class="field">
               <%= f.label "Amount to Reserve", class: "label"%>
-              <%= f.number_field :reserved_amount, min: '1', max: @listing.amount, step: '1', class: "input"%>
+              <%= f.number_field :reserved_amount, min: '1', max: @listing.amount, step: '1', class: "input", :required => true%>
             </div>
 
             <div class="field" style="padding-top: 20px">
               <%= f.label 'Reservation time', class: "label" %>
-              <%= f.time_select :reserved_time, 
-                  {ampm: true,
-                  start_hour: @listing.start_time.strftime("%k").to_i,
-                  end_hour: @listing.end_time.strftime("%k").to_i,
-                  prompt: true,
-                  minute_step: 15
-                  } %>
+              <%= f.time_select :reserved_time, {
+                ampm: true,
+                start_hour: @listing.start_time.strftime("%k").to_i,
+                end_hour: @listing.end_time.strftime("%k").to_i,
+                prompt: true,
+                minute_step: 15
+              } %>
             </div> 
 
 
@@ -126,7 +138,6 @@
             <%= f.submit "Reserve",
               class: "button is-primary" %>
           <% end %>
-        <% else %>
         <% end %>
       </div>
 </div>
