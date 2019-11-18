@@ -93,7 +93,14 @@
 
         <% end %>
 
-        <% if @listing.buyer != nil %>
+        <% if @listing.buyer == current_user.id %>
+          <% if !@listing.completed%>
+            <%= button_to "Complete", complete_listing_path(@listing), data: {
+                confirm: "Are you sure you want to complete this listing?",}, class: "button" %>
+          <% else %>
+            <button class="button is-info" disabled>Completed</button>
+          <% end %>
+        <% elsif @listing.buyer != nil %>
           <button class="button is-success" disabled>Reserved</button>
         <% elsif current_user.id != @listing.user_id %>
           <%= form_for @listing, url: reserve_listing_path,  method: "post" do |f|%>

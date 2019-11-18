@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   resources :listings do
     member do
       post 'reserve'
+      post 'complete'
     end
   end
   resources :profile
