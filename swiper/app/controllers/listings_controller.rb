@@ -2,7 +2,7 @@ class ListingsController < ApplicationController
 
     private
     def listing_params
-        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price)
+        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price, :reserved_amount, :reserved_time)
     end
 
     def filter_listings(filter_params)
@@ -13,7 +13,7 @@ class ListingsController < ApplicationController
             end
         end
         
-        filtered = Listing.where(location: selected_locations, buyer: nil)
+        filtered = Listing.where(location: selected_locations, buyer: nil, completed: false)
         filtered = filtered.where("price <= ?", filter_params[:price]) unless !filter_params[:price] || filter_params[:price].empty?
         filtered = filtered.where("? <= amount", filter_params[:amount]) unless !filter_params[:amount] || filter_params[:amount].empty?
         return filtered
@@ -24,7 +24,7 @@ class ListingsController < ApplicationController
         if params[:filter]
             @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(:price)
         else
-            @listings = Listing.where(buyer: nil).paginate(page: params[:page]).order(:price)
+            @listings = Listing.where(buyer: nil, completed: false).paginate(page: params[:page]).order(:price)
         end
     end
 
@@ -68,14 +68,33 @@ class ListingsController < ApplicationController
         redirect_to listings_path, notice: "Deleted Listing for  #{listing.location}"
     end
 
-    def reserve()
-        listing = Listing.find(params[:id])
-        if listing.buyer != nil
+    def reserve
+        @listing = Listing.find(params[:id])
+        
+        if @listing.buyer != nil
             redirect_to listing_path(@listing, :id => params[:id]), alert: "This listing cannot be reserved at this time"
         end
-        listing.buyer = current_user.id
-        listing.save
-        redirect_to listing_path(@listing, :id => params[:id])
+
+        if @listing.update({:buyer => current_user.id, :reserved_amount => params[:listing][:reserved_amount], :reserved_time => params[:listing][:reserved_time]})
+            redirect_to listing_path(@listing), notice: "Listing reserved!"
+        else
+            @errors = @listing.errors.full_messages
+            render :show
+        end
+    end
+
+    def complete
+        @listing = Listing.find(params[:id])
+        if @listing.buyer != current_user.id
+            redirect_to listing_path(@listing, :id => params[:id]), notice: "You cannot complete this listing at this time"
+        end
+
+        if @listing.update({:completed => true})
+            redirect_to listing_path(@listing), notice: "Listing completed!"
+        else
+            @errors = @listing.errors.full_messages
+            render :show
+        end
     end
 
 end
