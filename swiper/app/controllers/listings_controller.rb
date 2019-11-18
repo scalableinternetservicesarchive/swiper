@@ -24,14 +24,18 @@ class ListingsController < ApplicationController
 
     public
     def index
+        sort = "price ASC"
+        if params[:sort]
+            sort = params[:sort]
+        end
         if params[:filter]
-            @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(:price)
+            @listings = filter_listings(params[:filter]).paginate(page: params[:page]).order(sort)
         else
-            if(current_user)
-                @listings = Listing.where(buyer: nil, completed: false).where.not(user_id: current_user.id).paginate(page: params[:page]).order(:price)
+          if(current_user)
+                @listings = Listing.where(buyer: nil, completed: false).where.not(user_id: current_user.id).paginate(page: params[:page]).order(sort)
             else
-                @listings = Listing.where(buyer: nil, completed: false).paginate(page: params[:page]).order(:price)
-            end
+                @listings = Listing.where(buyer: nil, completed: false).paginate(page: params[:page]).order(sort)
+          end
         end
     end
 
