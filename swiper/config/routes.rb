@@ -27,9 +27,11 @@ Rails.application.routes.draw do
   end
   
   root to: "welcome#show"
+  
   resources :listings do
     member do
       post 'reserve'
+      post 'complete'
     end
   end
   resources :profile

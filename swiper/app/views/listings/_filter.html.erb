@@ -1,7 +1,7 @@
 <div class="section filter">
   <div class="box">
     <span class="title is-3">Filter</span>
-    <%= form_with path: listings_path, method: :get, scope: :filter do |f|%>
+    <%= form_with url: listings_path, method: :get, scope: :filter do |f|%>
     <div class="filter_section">
       <%= f.label :location, class: "label"%>
       <% Listing.locations.keys.each do |key| %>

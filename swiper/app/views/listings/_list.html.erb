@@ -81,8 +81,6 @@
             <th><%= link_to "Amount", listings_path(request.query_parameters.merge({:sort => "amount ASC"})) %>&darr;</th>
 
         <% end %>
-        
-
     </thead>
     <tbody>
         <%= render @listings%>

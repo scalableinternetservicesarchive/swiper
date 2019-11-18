@@ -1,9 +1,10 @@
-<div class="columns">
+<div class="columns is-multiline">
     
-    <div class="column">
+    <div class="column is-half">
         <span class="title is-3">My Listings</span>
         <table class="table is-fullwidth is-hoverable">
             <thead class="thead">
+                <th>Status</th>
                 <th>Location</th>
                 <th>Price</th>
                 <th>From</th>
@@ -11,15 +12,15 @@
                 <th>Amount</th>
             </thead>
             <tbody>
-                <%= render @listings%>
+                <%= render @listings, show_status: true  %>
             </tbody>
         </table>
     </div>
-    <div class="column is-one-fifth"></div>
-    <div class="column ">
-        <span class="title is-3">My Transactions</span>
+    <div class="column is-half">
+        <span class="title is-3">My Reservations</span>
         <table class="table is-fullwidth is-hoverable">
             <thead class="thead">
+                <th>Status</th>
                 <th>Location</th>
                 <th>Price</th>
                 <th>From</th>
@@ -28,6 +29,21 @@
             </thead>
             <tbody>
                 <%= render @transactions%>
+            </tbody>
+        </table>
+    </div>
+    <div class="column">
+        <span class="title is-3">History</span>
+        <table class="table is-fullwidth is-hoverable">
+            <thead class="thead">
+                <th>Location</th>
+                <th>Price</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+            </thead>
+            <tbody>
+                <%= render @history%>
             </tbody>
         </table>
     </div>
