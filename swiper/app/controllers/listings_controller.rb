@@ -83,12 +83,4 @@ class ListingsController < ApplicationController
         end
     end
 
-        if @listing.update({:buyer => current_user.id, :reserved_amount => :reserved_amount, :reserved_time => :reserved_time})
-            redirect_to listing_path(@listing), notice: "Listing reserved!"
-        else
-            @errors = @listing.errors.full_messages
-            render :show
-        end
-    end
-
 end
