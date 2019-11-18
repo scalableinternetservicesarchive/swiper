@@ -75,7 +75,7 @@ class ListingsController < ApplicationController
             redirect_to listing_path(@listing, :id => params[:id]), alert: "This listing cannot be reserved at this time"
         end
 
-        if @listing.update({:buyer => current_user.id, :reserved_amount => params[:listing][:reserved_amount], :reserved_time => :reserved_time})
+        if @listing.update({:buyer => current_user.id, :reserved_amount => params[:listing][:reserved_amount], :reserved_time => params[:listing][:reserved_time]})
             redirect_to listing_path(@listing), notice: "Listing reserved!"
         else
             @errors = @listing.errors.full_messages
