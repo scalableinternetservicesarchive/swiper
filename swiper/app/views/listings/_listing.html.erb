@@ -1,5 +1,11 @@
 <tr class="listing" id="listing-<%= listing.id%>">
-  <%# <td> <%= listing.id%>
+  <td class="status">
+    <% if listing.buyer == nil %>
+    <span class="tag is-light">Open</span>
+    <% else %>
+    <span class="tag is-dark">Reserved</span>
+    <% end %>
+  </td>
   <td class="location">
     <%= link_to listing.location, listing_path(listing) %>
   </td>
