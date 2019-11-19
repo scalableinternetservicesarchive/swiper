@@ -115,7 +115,7 @@
         <% elsif @listing.buyer != nil %>
           <button class="button is-success" disabled>Reserved</button>
         <% elsif current_user.id != @listing.user_id %>
-          <%= form_for @listing, url: reserve_listing_path,  method: "post" do |f|%>
+          <%= form_for @listing, url: reserve_listing_path, method: "post" do |f|%>
 
             <div class="field">
               <%= f.label "Amount to Reserve", class: "label"%>

@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2019_11_18_013723) do
     t.boolean "cashapp", default: false
     t.string "contact"
     t.float "rating"
-    t.integer "rating_count"
+    t.integer "rating_count", default: 0
     t.index ["email"], name: "index_users_on_email"
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
