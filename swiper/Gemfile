@@ -33,8 +33,6 @@ gem 'clearance', '~> 1.15.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.3', require: false
 
-# Styling with bulma
-gem "bulma-rails", "~> 0.7.5"
 #also bootstap
 gem 'bootstrap-will_paginate', '1.0.0'
 gem 'bootstrap-sass',          '3.4.1'
