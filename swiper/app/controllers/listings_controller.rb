@@ -116,7 +116,7 @@ class ListingsController < ApplicationController
         end
         
         # If the reservation time is before the current time (without date), it must be for the next day
-        if Time.new(params[:listing]["reserved_time(4i)"].to_i, params[:listing]["reserved_time(5i)"].to_i).strftime("%H%M%S%N") <= Time.current.strftime("%H%M%S%N")
+        if Time.current.change(hour: params[:listing]["reserved_time(4i)"].to_i, minute: params[:listing]["reserved_time(5i)"].to_i).strftime("%H%M%S%N") <= Time.current.strftime("%H%M%S%N")
             date = Time.current + 1.day
         else
             date = Time.current
