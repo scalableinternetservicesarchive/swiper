@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="debug" dumptraffic="true">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+  </clients>
+
+  <!-- Server side setup -->
+  <servers>
+    <server host="localhost.charlesproxy.com" port="3000" type="tcp"></server>
+  </servers>
+
+
+  <load>
+    <arrivalphase phase="1" duration="1" unit="second">
+      <users arrivalrate="1" unit="second"></users>
+    </arrivalphase>
+
+
+    <!-- <arrivalphase phase="2" duration="15" unit="second">
+      <users arrivalrate="2" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="3" duration="15" unit="second">
+      <users arrivalrate="3" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="4" duration="15" unit="second">
+      <users arrivalrate="4" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="5" duration="15" unit="second">
+      <users arrivalrate="5" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="6" duration="15" unit="second">
+      <users arrivalrate="10" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="7" duration="15" unit="second">
+      <users arrivalrate="15" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="8" duration="15" unit="second">
+      <users arrivalrate="20" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="9" duration="15" unit="second">
+      <users arrivalrate="25" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="10" duration="15" unit="second">
+      <users arrivalrate="50" unit="second"></users>
+    </arrivalphase> -->
+    
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 2 seconds -->
+    <option name="global_ack_timeout" value="2000"></option>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+    </option>
+  </options>
+
+  <sessions>
+    <session name="http-example" probability="100" type="ts_http">
+      <!-- REQUEST GET visit the base page -->
+      <request>
+        <http url='/' version='1.1' method='GET'></http>
+      </request>
+
+      <!-- REQUEST GET go to login page -->
+      <request>
+        <http url='/sign_in' version='1.1' method='GET'></http>
+      </request>
+
+      <!-- wait for up to 1 second -->
+      <thinktime value="1" random="true"></thinktime>
+
+      <!-- REQUEST GET go to to sign_up page and pull authenticity_token-->
+      <request>
+        <dyn_variable name="authenticity_token"></dyn_variable>
+        <http url='/sign_up' version='1.1' method='GET'>
+          <http_header name="Cookie" value="%%_cookie%%" />
+        </http>
+      </request>
+
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+
+      <!-- wait for up to 2 seconds, user is filling out new user form -->
+      <thinktime value="2" random="true" ></thinktime>
+
+      <!-- REQUEST POST make a user -->
+      <request subst="true">
+        <http url='/users' version='1.1'
+        contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%_tsung_userid%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
+        content_type='application/x-www-form-urlencoded' method='POST'>
+        <!-- <http_header name="Cookie" value="%%_cookie-session%%" /> -->
+        </http>
+      </request>
+
+      <!-- REQUEST GET visit root to acquire remember token -->
+      <request>
+        <http url='/' version='1.1' method='GET'></http>
+      </request>
+
+      <!-- REQUEST GET checkout listings -->
+      <request>
+        <http url='/listings' version='1.1' method='GET'></http>
+      </request>
+
+      <!-- REQUEST GET go to new listing -->
+      <request>
+        <dyn_variable name="authenticity_token"></dyn_variable>
+        <http url='/listings/new' version='1.1' method='GET'></http>
+      </request>
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+
+      <!-- amount 1..5 -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        &quot;listing%5Bamount%5D=&quot; ++ integer_to_list(rand:uniform(5))
+        end.">
+				<var name="amount_query" />
+			</setdynvars>
+
+      <!-- price 3.00 .. 5.25 -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Price = 2.75 + 0.25 * rand:uniform(10), 
+        &quot;listing%5Bprice%5D=&quot; ++ float_to_list(Price,[{decimals, 2}]) end.">
+				<var name="price_query" />
+			</setdynvars>
+
+      <!-- random location -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Choice = rand:uniform(8), 
+        if 
+          Choice == 1 -> 
+            &quot;listing%5Blocation%5D=BPlate&quot;;
+          Choice == 2 -> 
+            &quot;listing%5Blocation%5D=Covel&quot;;
+          Choice == 3 -> 
+            &quot;listing%5Blocation%5D=DeNeve&quot;;
+          Choice == 4 -> 
+            &quot;listing%5Blocation%5D=Feast&quot;;
+          Choice == 5 -> 
+            &quot;listing%5Blocation%5D=BCafe&quot;;
+          Choice == 6 -> 
+            &quot;listing%5Blocation%5D=Cafe1919&quot;;
+          Choice == 7 -> 
+            &quot;listing%5Blocation%5D=Rende&quot;;
+          true -> 
+            &quot;listing%5Blocation%5D=Study&quot;
+        end end.">
+        <var name="location_query" />
+			</setdynvars>
+
+
+      <!-- REQUEST POST create listing -->
+      <request subst="true">
+        <dyn_variable name="redirect" re="listings/(.*)&quot;"/>
+        <http url="/listings" version='1.1' method='POST'
+        contents='authenticity_token=%%_encoded_authenticity_token%%&amp;listing%5Bstart_time%281i%29%5D=1&amp;listing%5Bstart_time%282i%29%5D=1&amp;listing%5Bstart_time%283i%29%5D=1&amp;listing%5Bstart_time%284i%29%5D=&amp;listing%5Bstart_time%285i%29%5D=&amp;listing%5Bend_time%281i%29%5D=1&amp;listing%5Bend_time%282i%29%5D=1&amp;listing%5Bend_time%283i%29%5D=1&amp;listing%5Bend_time%284i%29%5D=&amp;listing%5Bend_time%285i%29%5D=&amp;%%_amount_query%%&amp;%%_price_query%%&amp;%%_location_query%%&amp;listing%5Bdescription%5D=foobar&amp;commit=Create+Listing'
+        content_type='application/x-www-form-urlencoded'></http>
+      </request>
+
+      <!-- REQUEST GET follow redirect -->
+      <!-- <request subst="true">
+        <dyn_variable name="other_token" xpath="/html/head/meta[@name='csrf-token']/@content"></dyn_variable>
+        <http url='%%_redirect%%' version='1.1' method='GET'></http>
+      </request> -->
+
+      <!-- <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="other_encoded_token" />
+			</setdynvars> -->
+
+      <!-- REQUEST GET filter by location-->
+      <!-- REQUEST GET filter by price-->
+      <!-- REQUEST GET filter by amount -->
+      <!-- REQUEST GET filter by time -->
+      <!-- REQUEST GET choose random sort-->
+      <!-- REQUEST GET click through 3 listings-->
+      <!-- REQUEST POST reserve a listing -->
+      <!-- REQUEST GET go to your profile -->
+      <!-- REQUEST POST complete the transaction -->
+      <!-- REQUEST POST signout -->
+      <!-- <request subst="true">
+        <http url="/sign_out" version='1.1' method='DELETE'
+        contents='authenticity_token=%%_encoded_authenticity_token%%'
+        content_type='application/x-www-form-urlencoded'></http>
+      </request> -->
+
+      <!-- filter out only dining halls or alacarte-->
+      <!-- <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Choice = rand:uniform(2), 
+        if 
+          Choice == 1 -> 
+            &quot;filter%5BBPlate%5D=1&amp;filter%5BCovel%5D=1&amp;filter%5BDeNeve%5D=1&amp;filter%5BFeast%5D=1&quot;;
+          true -> 
+            &quot;filter%5BBCafe%5D=1&amp;filter%5BCafe1919%5D=1&amp;filter%5BRende%5D=1&amp;filter%5BStudy%5D=1&quot;
+        end end.">
+				<var name="location_query" />
+			</setdynvars> -->
+
+
+      <!-- <request subst="true">
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;commit=Filter' version='1.1' method='GET'></http>
+      </request> -->
+
+    
+      <!-- Uncomment the following to debug print your dynamic variables  -->
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+        io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+        ok end.">
+        <var name="dump" />
+      </setdynvars>
+
+
+      
+    </session>
+  </sessions>
+</tsung>

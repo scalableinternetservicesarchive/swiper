@@ -12,8 +12,10 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
 
+  
   host = 'localhost:3000'
   config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
+  config.hosts << "localhost.charlesproxy.com"
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
