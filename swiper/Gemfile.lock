@@ -230,7 +230,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootsnap (>= 1.4.2)
+  bootsnap (>= 1.4.3)
   bootstrap-sass (= 3.4.1)
   bootstrap-will_paginate (= 1.0.0)
   bulma-rails (~> 0.7.5)
