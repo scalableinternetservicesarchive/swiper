@@ -6,7 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-exit if !Rails.env.development?
 
 puts "Deleting the Data"
 Listing.delete_all
@@ -16,7 +15,7 @@ puts "Creating user"
 user = FactoryBot.create(:user, email: "test@example.com", password:"test")
 
 puts "Creating lots of users"
-25.times do |n|
+100.times do |n|
     email = "example-#{n+1}@railstutorial.org" 
     password = "password"
     User.create!(email: email, password:password)
@@ -24,7 +23,7 @@ end
 
 puts "Creating Listings"
 User.all.each do |u|
-    2.times do
+    10.times do
         FactoryBot.create(:listing, user: u)
     end
 end
