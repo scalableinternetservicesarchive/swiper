@@ -6,7 +6,7 @@
       <%= f.label :location, class: "label"%>
       <% Listing.locations.keys.each do |key| %>
         <div class="field">
-          <%= f.check_box key, {checked: !params[:filter] || params[:filter][key] == '1'}%>
+          <%= f.check_box key, {checked: params[:filter].nil? || params[:filter][key] == '1'}%>
           <%= f.label "#{key}_label", key %>
         </div>
       <%end%>
@@ -31,6 +31,32 @@
         <%= f.number_field :amount, step: 1, placeholder: "Min # of swipes", class: "input"%>
       </div>
 
+      <%= f.label "Payment method:", class: "label" %>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <%= f.check_box :cash, class: "checkbox", checked: true %>
+            <span class="title is-5">Cash</span>
+          </div>
+          
+          <div class="field">
+            <%= f.check_box :venmo, class: "checkbox", checked: true %>
+            <%= image_tag "venmo.png", size: 75, alt: "Venmo" %>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="field">
+            <%= f.check_box :cashapp, class: "checkbox", checked: true %>
+            <%= image_tag "cashapp.png", size: 75, alt: "Cash App" %>
+          </div>
+
+          <div class="field">
+            <%= f.check_box :paypal, class: "checkbox", checked: true %>
+            <%= image_tag "paypal.png", size: 75, alt: "PayPal" %>
+          </div>
+        </div>
+      </div>
       <div class="control">
         <%= f.submit "Filter", class: "button is-primary"%>
       </div>

@@ -13,14 +13,14 @@
         <div class="column is-one-half">
             <div class="field">
                 <%= form.label :start_time, 'From', class: "label" %>
-                <%= form.time_select :start_time, {minute_step: 15} %>
+                <%= form.time_select :start_time, {ampm: true, prompt: true, minute_step: 15} %>
             </div>
         </div>
 
         <div class="column is-one-half">
             <div class="field">
                 <%= form.label :end_time, 'To', class: "label" %>
-                <%= form.time_select :end_time, {minute_step: 15}%>
+                <%= form.time_select :end_time, {ampm: true, prompt: true, minute_step: 15}%>
             </div>
         </div>
     </div>

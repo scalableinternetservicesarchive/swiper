@@ -14,11 +14,32 @@ class ListingsController < ApplicationController
         end
         
         filtered = Listing.where(location: selected_locations, buyer: nil, completed: false)
-        if(current_user)
+        if current_user
             filtered = filtered.where.not(user_id: current_user.id)
         end
         filtered = filtered.where("price <= ?", filter_params[:price]) unless !filter_params[:price] || filter_params[:price].empty?
         filtered = filtered.where("? <= amount", filter_params[:amount]) unless !filter_params[:amount] || filter_params[:amount].empty?
+        
+        if filter_params[:cash] == "1" || filter_params[:venmo] == "1" || filter_params[:paypal] == "1" || filter_params[:cashapp] == "1"
+            filtered_dup = filtered
+            filtered = Listing.none
+            if filter_params[:cash] == "1"
+                filtered = filtered.or(filtered_dup.joins(:user).where(users: {cash: 1}))
+            end
+            
+            if filter_params[:venmo] == "1"
+                filtered =filtered.or(filtered_dup.joins(:user).where(users: {venmo: 1}))
+            end
+
+            if filter_params[:paypal] == "1"
+                filtered = filtered.or(filtered_dup.joins(:user).where(users: {paypal: 1}))
+            end
+
+            if filter_params[:cashapp] == "1"
+                filtered = filtered.or(filtered_dup.joins(:user).where(users: {cashapp: 1}))
+            end
+        end
+
         return filtered
     end
 
@@ -87,10 +108,28 @@ class ListingsController < ApplicationController
         @listing = Listing.find(params[:id])
         
         if @listing.buyer != nil
-            redirect_to listing_path(@listing, :id => params[:id]), :flash => { :error => "This listing cannot currently be reserved" }
+            redirect_to listing_path(@listing, :id => params[:id]), :flash => { :error => "This listing cannot currently be reserved" } and return
         end
 
-        if @listing.update({:buyer => current_user.id, :reserved_amount => params[:listing][:reserved_amount], :reserved_time => params[:listing][:reserved_time]})
+        if params[:listing]["reserved_time(4i)"].empty?|| params[:listing]["reserved_time(5i)"].empty?
+            redirect_to listing_path(@listing, :id => params[:id]), :flash => { :error => "Please select a valid time" } and return
+        end
+        
+        # If the reservation time is before the current time (without date), it must be for the next day
+        if Time.new(params[:listing]["reserved_time(4i)"].to_i, params[:listing]["reserved_time(5i)"].to_i).strftime("%H%M%S%N") <= Time.current.strftime("%H%M%S%N")
+            date = Time.current + 1.day
+        else
+            date = Time.current
+        end
+
+        if @listing.update({:buyer => current_user.id, :reserved_amount => params[:listing][:reserved_amount], :reserved_time => 
+            DateTime.new(
+                        date.strftime("%Y").to_i,
+                        date.strftime("%m").to_i,
+                        date.strftime("%e").to_i,     
+                        params[:listing]["reserved_time(4i)"].to_i,
+                        params[:listing]["reserved_time(5i)"].to_i
+                    )})
             redirect_to listing_path(@listing), :flash => { :success => "Listing reserved!" }
         else
             @errors = @listing.errors.full_messages
@@ -101,7 +140,7 @@ class ListingsController < ApplicationController
     def complete
         @listing = Listing.find(params[:id])
         if @listing.buyer != current_user.id
-            redirect_to listing_path(@listing, :id => params[:id]), :flash => { :error => "You cannot currently complete this listing!" }
+            redirect_to listing_path(@listing, :id => params[:id]), :flash => { :error => "You cannot currently complete this listing!" } and return
         end
 
         if @listing.update({:completed => true})

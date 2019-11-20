@@ -16,15 +16,13 @@ puts "Creating user"
 user = FactoryBot.create(:user, email: "test@example.com", password:"test")
 
 puts "Creating lots of users"
-25.times do |n|
-    email = "example-#{n+1}@railstutorial.org" 
-    password = "password"
-    User.create!(email: email, password:password)
+100.times do |n|
+    FactoryBot.create(:user)
 end
 
 puts "Creating Listings"
 User.all.each do |u|
-    2.times do
+    5.times do
         FactoryBot.create(:listing, user: u)
     end
 end
