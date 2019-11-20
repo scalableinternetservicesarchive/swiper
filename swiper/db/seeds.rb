@@ -6,7 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-exit if !Rails.env.development?
 
 puts "Deleting the Data"
 Listing.delete_all
