@@ -65,12 +65,12 @@ class ListingsController < ApplicationController
                 params[:filter]["latest(5i)"].to_i
             )
 
-            earliest += 1.day if earliest <= Time.current and latest <= Time.current
-            latest += 1.day if latest <= Time.current
+            new_earliest += 1.day if earliest <= Time.current and latest <= Time.current and earliest <= latest
+            new_latest += 1.day if latest <= Time.current or latest <= earliest
 
             filtered = filtered.where(
                 "(start_time between ? and ? or end_time between ? and ?) or (start_time <= ? and ? <= end_time)",
-                earliest, latest, earliest, latest, earliest, latest)
+                new_earliest, new_latest, new_earliest, new_latest, new_earliest, new_latest)
         end
 
         return filtered

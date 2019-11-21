@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="http://swiper-dev.djdchrczj9.us-west-2.elasticbeanstalk.com/" port="3000" type="tcp"></server>
+    <server host="swiper-dev.djdchrczj9.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
   </servers>
 
 
