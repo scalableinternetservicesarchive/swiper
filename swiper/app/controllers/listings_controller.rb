@@ -40,6 +40,39 @@ class ListingsController < ApplicationController
             end
         end
 
+        if !(!params[:filter]["earliest(4i)"] ||
+            !params[:filter]["earliest(5i)"] ||
+            !params[:filter]["latest(4i)"] ||
+            !params[:filter]["latest(5i)"] ||
+            params[:filter]["earliest(4i)"].empty? ||
+            params[:filter]["earliest(5i)"].empty? ||
+            params[:filter]["latest(4i)"].empty? ||
+            params[:filter]["latest(5i)"].empty?
+        )
+            earliest = DateTime.new(
+                Time.current.strftime("%Y").to_i,
+                Time.current.strftime("%m").to_i,
+                Time.current.strftime("%e").to_i,     
+                params[:filter]["earliest(4i)"].to_i,
+                params[:filter]["earliest(5i)"].to_i
+            )
+
+            latest = DateTime.new(
+                Time.current.strftime("%Y").to_i,
+                Time.current.strftime("%m").to_i,
+                Time.current.strftime("%e").to_i,     
+                params[:filter]["latest(4i)"].to_i,
+                params[:filter]["latest(5i)"].to_i
+            )
+
+            earliest += 1.day if earliest <= Time.current and latest <= Time.current
+            latest += 1.day if latest <= Time.current
+
+            filtered = filtered.where(
+                "(start_time between ? and ? or end_time between ? and ?) or (start_time <= ? and ? <= end_time)",
+                earliest, latest, earliest, latest, earliest, latest)
+        end
+
         return filtered
     end
 

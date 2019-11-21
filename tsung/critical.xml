@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="localhost.charlesproxy.com" port="3000" type="tcp"></server>
+    <server host="localhost" port="3000" type="tcp"></server>
   </servers>
 
 
@@ -88,7 +88,6 @@
           <http_header name="Cookie" value="%%_cookie%%" />
         </http>
       </request>
-
       <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
 				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
@@ -104,7 +103,6 @@
         <http url='/users' version='1.1'
         contents='authenticity_token=%%_encoded_authenticity_token%%&amp;user%5Bemail%5D=tsung%%_tsung_userid%%%40example.com&amp;user%5Bpassword%5D=test&amp;commit=Sign+Up'
         content_type='application/x-www-form-urlencoded' method='POST'>
-        <!-- <http_header name="Cookie" value="%%_cookie-session%%" /> -->
         </http>
       </request>
 
@@ -113,10 +111,6 @@
         <http url='/' version='1.1' method='GET'></http>
       </request>
 
-      <!-- REQUEST GET checkout listings -->
-      <request>
-        <http url='/listings' version='1.1' method='GET'></http>
-      </request>
 
       <!-- REQUEST GET go to new listing -->
       <request>
@@ -174,43 +168,29 @@
 
       <!-- REQUEST POST create listing -->
       <request subst="true">
-        <dyn_variable name="redirect" re="listings/(.*)&quot;"/>
+        <dyn_variable name="redirect" re="(listings/.*)\r"/>
         <http url="/listings" version='1.1' method='POST'
         contents='authenticity_token=%%_encoded_authenticity_token%%&amp;listing%5Bstart_time%281i%29%5D=1&amp;listing%5Bstart_time%282i%29%5D=1&amp;listing%5Bstart_time%283i%29%5D=1&amp;listing%5Bstart_time%284i%29%5D=&amp;listing%5Bstart_time%285i%29%5D=&amp;listing%5Bend_time%281i%29%5D=1&amp;listing%5Bend_time%282i%29%5D=1&amp;listing%5Bend_time%283i%29%5D=1&amp;listing%5Bend_time%284i%29%5D=&amp;listing%5Bend_time%285i%29%5D=&amp;%%_amount_query%%&amp;%%_price_query%%&amp;%%_location_query%%&amp;listing%5Bdescription%5D=foobar&amp;commit=Create+Listing'
         content_type='application/x-www-form-urlencoded'></http>
       </request>
 
       <!-- REQUEST GET follow redirect -->
-      <!-- <request subst="true">
-        <dyn_variable name="other_token" xpath="/html/head/meta[@name='csrf-token']/@content"></dyn_variable>
-        <http url='%%_redirect%%' version='1.1' method='GET'></http>
-      </request> -->
+      <request subst="true">
+        <dyn_variable name="csrf_token" xpath="html/head/meta[@name='csrf-token']/@content"></dyn_variable>
+        <http url='/%%_redirect%%' version='1.1' method='GET'></http>
+      </request>
 
-      <!-- <setdynvars sourcetype="eval"
+      <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
-				{ok,[Val]}=ts_dynvars:lookup(authenticity_token,DynVars),
+				{ok,[Val]}=ts_dynvars:lookup(csrf_token,DynVars),
 				http_uri:encode(Val) end.">
-				<var name="other_encoded_token" />
-			</setdynvars> -->
+				<var name="encoded_csrf_token" />
+			</setdynvars>
 
-      <!-- REQUEST GET filter by location-->
-      <!-- REQUEST GET filter by price-->
-      <!-- REQUEST GET filter by amount -->
-      <!-- REQUEST GET filter by time -->
-      <!-- REQUEST GET choose random sort-->
-      <!-- REQUEST GET click through 3 listings-->
-      <!-- REQUEST POST reserve a listing -->
-      <!-- REQUEST GET go to your profile -->
-      <!-- REQUEST POST complete the transaction -->
-      <!-- REQUEST POST signout -->
-      <!-- <request subst="true">
-        <http url="/sign_out" version='1.1' method='DELETE'
-        contents='authenticity_token=%%_encoded_authenticity_token%%'
-        content_type='application/x-www-form-urlencoded'></http>
-      </request> -->
-
+      <!-- REQUEST GET filter by everything-->
       <!-- filter out only dining halls or alacarte-->
-      <!-- <setdynvars sourcetype="eval"
+    
+      <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
         Choice = rand:uniform(2), 
         if 
@@ -220,14 +200,142 @@
             &quot;filter%5BBCafe%5D=1&amp;filter%5BCafe1919%5D=1&amp;filter%5BRende%5D=1&amp;filter%5BStudy%5D=1&quot;
         end end.">
 				<var name="location_query" />
-			</setdynvars> -->
+			</setdynvars>
 
+      <!-- random amount 3..5.25 -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Price = 2.75 + 0.25 * rand:uniform(10), 
+        &quot;filter%5Bprice%5D=&quot; ++ float_to_list(Price,[{decimals, 2}]) end.">
+				<var name="price_query" />
+			</setdynvars>
 
-      <!-- <request subst="true">
-        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;commit=Filter' version='1.1' method='GET'></http>
-      </request> -->
+      <!-- random amount 1..5 -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        &quot;filter%5Bamount%5D=&quot; ++ integer_to_list(rand:uniform(5))
+        end.">
+				<var name="amount_query" />
+			</setdynvars>
 
+      <!-- random time -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        EarlyHour = rand:uniform(24) rem 24,
+        LateHour = (EarlyHour + 4) rem 24,
+        &quot;filter%5Bearliest%284i%29%5D=&quot; ++ integer_to_list(EarlyHour)++ &quot;&amp;filter%5Bearliest%285i%29%5D=00&amp;filter%5Blatest%284i%29%5D=&quot; ++ integer_to_list(LateHour) ++ &quot;&amp;filter%5Blatest%285i%29%5D=00&quot;
+        end.">
+				<var name="time_query" />
+			</setdynvars>
+
+      <!-- random payment type -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Cash = &quot;filter%5Bcash%5D=&quot; ++ integer_to_list(rand:uniform(2) - 1) ++ &quot;&amp;&quot;,
+        CashApp = &quot;filter%5Bcashapp%5D=&quot; ++ integer_to_list(rand:uniform(2) - 1) ++ &quot;&amp;&quot;,
+        Venmo = &quot;filter%5Bvenmoc%5D=&quot; ++ integer_to_list(rand:uniform(2) - 1) ++ &quot;&amp;&quot;,
+        Paypal =&quot;filter%5Bpaypal%5D=&quot; ++ integer_to_list(rand:uniform(2) - 1),
+        Cash ++ CashApp ++ Venmo ++ Paypal
+        end.">
+				<var name="payment_query" />
+			</setdynvars>
+
+      <request subst="true">
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;%%_time_query%%&amp;%%_payment_query%%'></http>
+      </request>
     
+      
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Choice = rand:uniform(4), 
+        if 
+          Choice == 1 -> 
+            &quot;sort=start_time+ASC&quot;;
+          Choice == 2 -> 
+            &quot;sort=start_time+DESC&quot;;
+          Choice == 3 -> 
+            &quot;sort=end_time+ASC&quot;;
+          true ->
+            &quot;sort=end_time+DESC&quot;
+        end end.">
+				<var name="sort_query" />
+			</setdynvars>
+
+      <!-- REQUEST GET choose random sort-->
+      <request subst="true">
+        <dyn_variable name="listing_id" re='id="listing-([0-9]*)"' />
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;%%_time_query%%&amp;%%_payment_query%%&amp;%%_sort_query%%'></http>
+      </request>
+
+      <!-- REQUEST GET Visit the top listing -->
+      <request subst='true'>
+        <http url='/listings/%%_listing_id%%' />
+      </request>
+
+
+      <!-- GET Visit a listing to reserve-->
+      <request subst='true'>
+        <dyn_variable name="authenticity_token"></dyn_variable>
+        <!-- <dyn_variable name='hour' re=''></dyn_variable>
+        <dyn_variable name='minute' re=''></dyn_variable> -->
+        <http url='/listings/%%_tsung_userid%%' />
+      </request>
+
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+
+       <!-- REQUEST POST reserve a listing -->
+       <request subst='true'>
+        <dyn_variable name="reserved_id" re='listings/([.0-9]*)">'/>
+        <http url="/listings/%%_tsung_userid%%/reserve" version='1.1' method='POST'
+        contents='authenticity_token=%%_encoded_authenticity_token%%&amp;listing%5Bamount%281i%29%5D=1&amp;listing%5Breserved_time%284i%29%5D=12&amp;listing%5Breserved_time%285i%29%5D=0'
+        content_type='application/x-www-form-urlencoded'></http>
+       </request>
+
+      <!-- REQUEST GET follow redirect -->
+      <request subst='true'>
+        <dyn_variable name="profile_id" re='profile/([0-9]*)' />
+        <http url="/listings/%%_reserved_id%%" version='1.1' method='GET'></http>
+     </request>
+
+      <!-- REQUEST GET go to your profile -->
+      <request subst='true'>
+        <http url="/profile/%%_profile_id%%" version='1.1' method='GET'></http>
+     </request>
+
+      <!-- REQUEST GET go to the og transaction -->
+      <request subst='true'>
+        <dyn_variable name="authenticity_token"></dyn_variable>
+        <dyn_variable name="action" re='action="(/listings/[0-9]*/complete)"' />
+        <http url="/listings/%%_reserved_id%%" version='1.1' method='GET'></http>
+      </request>
+
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_authenticity_token" />
+			</setdynvars>
+
+      <!-- REQUEST POST complete the transcation -->
+      <request subst='true'>
+        <http url="%%_action%%" version='1.1' method='POST'
+        contents='authenticity_token=%%_encoded_authenticity_token%%'
+        content_type='application/x-www-form-urlencoded'></http>
+      </request>
+
+
+      <!-- REQUEST POST signout -->
+      <request subst="true">
+        <http url="/sign_out" version='1.1' method='DELETE'
+        contents='authenticity_token=%%_encoded_csrf_token%%'
+        content_type='application/x-www-form-urlencoded'></http>
+      </request>
+
       <!-- Uncomment the following to debug print your dynamic variables  -->
       <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
         io:format([126, $p, 126, $n, 126, $n], [DynVars]),
