@@ -4,22 +4,21 @@
 
   <!-- Client side setup -->
   <clients>
-    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+    <client host="localhost" use_controller_vm="true" maxusers='20000'/>
   </clients>
 
   <!-- Server side setup -->
   <servers>
-    <server host="localhost" port="3000" type="tcp"></server>
+    <server host="http://swiper-dev.djdchrczj9.us-west-2.elasticbeanstalk.com/" port="3000" type="tcp"></server>
   </servers>
 
 
   <load>
-    <arrivalphase phase="1" duration="1" unit="second">
+    <arrivalphase phase="1" duration="15" unit="second">
       <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
 
-
-    <!-- <arrivalphase phase="2" duration="15" unit="second">
+    <arrivalphase phase="2" duration="15" unit="second">
       <users arrivalrate="2" unit="second"></users>
     </arrivalphase>
 
@@ -53,7 +52,19 @@
 
     <arrivalphase phase="10" duration="15" unit="second">
       <users arrivalrate="50" unit="second"></users>
-    </arrivalphase> -->
+    </arrivalphase>
+
+    <arrivalphase phase="11" duration="15" unit="second">
+      <users arrivalrate="75" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="12" duration="15" unit="second">
+      <users arrivalrate="100" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="13" duration="15" unit="second">
+      <users arrivalrate="125" unit="second"></users>
+    </arrivalphase>
     
   </load>
 
@@ -165,6 +176,9 @@
         <var name="location_query" />
 			</setdynvars>
 
+      <!-- wait for up to 2 seconds, user is filling out new listing form -->
+      <thinktime value="2" random="true" ></thinktime>
+
 
       <!-- REQUEST POST create listing -->
       <request subst="true">
@@ -188,8 +202,9 @@
 			</setdynvars>
 
       <!-- REQUEST GET filter by everything-->
+      <!-- wait for up to 2 seconds, user is filling out new filter form -->
+      <thinktime value="2" random="true" ></thinktime>
       <!-- filter out only dining halls or alacarte-->
-    
       <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
         Choice = rand:uniform(2), 
@@ -275,31 +290,29 @@
 
       <!-- GET Visit a listing to reserve-->
       <request subst='true'>
-        <dyn_variable name="authenticity_token"></dyn_variable>
+        <dyn_variable name="csrf_token" xpath="html/head/meta[@name='csrf-token']/@content"></dyn_variable>
         <!-- <dyn_variable name='hour' re=''></dyn_variable>
         <dyn_variable name='minute' re=''></dyn_variable> -->
         <http url='/listings/%%_tsung_userid%%' />
       </request>
-
       <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
-				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				{ok,[Val]}=ts_dynvars:lookup(csrf_token,DynVars),
 				http_uri:encode(Val) end.">
-				<var name="encoded_authenticity_token" />
+				<var name="encoded_csrf_token" />
 			</setdynvars>
 
        <!-- REQUEST POST reserve a listing -->
        <request subst='true'>
-        <dyn_variable name="reserved_id" re='listings/([.0-9]*)">'/>
         <http url="/listings/%%_tsung_userid%%/reserve" version='1.1' method='POST'
-        contents='authenticity_token=%%_encoded_authenticity_token%%&amp;listing%5Bamount%281i%29%5D=1&amp;listing%5Breserved_time%284i%29%5D=12&amp;listing%5Breserved_time%285i%29%5D=0'
+        contents='authenticity_token=%%_encoded_csrf_token%%&amp;listing%5Bamount%281i%29%5D=1&amp;listing%5Breserved_time%284i%29%5D=12&amp;listing%5Breserved_time%285i%29%5D=0'
         content_type='application/x-www-form-urlencoded'></http>
        </request>
 
       <!-- REQUEST GET follow redirect -->
       <request subst='true'>
         <dyn_variable name="profile_id" re='profile/([0-9]*)' />
-        <http url="/listings/%%_reserved_id%%" version='1.1' method='GET'></http>
+        <http url="/listings/%%_tsung_userid%%" version='1.1' method='GET'></http>
      </request>
 
       <!-- REQUEST GET go to your profile -->
@@ -309,24 +322,35 @@
 
       <!-- REQUEST GET go to the og transaction -->
       <request subst='true'>
-        <dyn_variable name="authenticity_token"></dyn_variable>
-        <dyn_variable name="action" re='action="(/listings/[0-9]*/complete)"' />
-        <http url="/listings/%%_reserved_id%%" version='1.1' method='GET'></http>
+        <dyn_variable name="csrf_token" xpath="html/head/meta[@name='csrf-token']/@content"></dyn_variable>
+        <http url="/listings/%%_tsung_userid%%" version='1.1' method='GET'></http>
       </request>
-
       <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
-				{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),
+				{ok,[Val]}=ts_dynvars:lookup(csrf_token,DynVars),
 				http_uri:encode(Val) end.">
-				<var name="encoded_authenticity_token" />
+				<var name="encoded_csrf_token" />
 			</setdynvars>
 
       <!-- REQUEST POST complete the transcation -->
       <request subst='true'>
-        <http url="%%_action%%" version='1.1' method='POST'
-        contents='authenticity_token=%%_encoded_authenticity_token%%'
+        <http url="/listings/%%_tsung_userid%%/complete" version='1.1' method='POST'
+        contents='authenticity_token=%%_encoded_csrf_token%%'
         content_type='application/x-www-form-urlencoded'></http>
       </request>
+
+
+      <!-- follow the redirect -->
+      <request subst='true'>
+          <dyn_variable name="csrf_token" xpath="html/head/meta[@name='csrf-token']/@content"></dyn_variable>
+          <http url="/listings/%%_tsung_userid%%" version='1.1' method='GET'></http>
+      </request>
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+				{ok,[Val]}=ts_dynvars:lookup(csrf_token,DynVars),
+				http_uri:encode(Val) end.">
+				<var name="encoded_csrf_token" />
+			</setdynvars>
 
 
       <!-- REQUEST POST signout -->
