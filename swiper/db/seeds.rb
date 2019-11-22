@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-exit if !Rails.env.development?
+require 'factory_bot'
 
 puts "Deleting the Data"
 Listing.delete_all
@@ -22,7 +22,7 @@ end
 
 puts "Creating Listings"
 User.all.each do |u|
-    5.times do
+    10.times do
         FactoryBot.create(:listing, user: u)
     end
 end
