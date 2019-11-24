@@ -180,10 +180,11 @@ class ListingsController < ApplicationController
         else
             puts @seller.rating
             if @seller.rating == nil
-                new_rating = params[:rating]
-            else
-                new_rating = @seller.rating + params[:rating]
+                @seller.rating = 0
             end
+                
+            new_rating = @seller.rating + (params[:rating] / (@seller.rating_count + 1))
+            
             @seller.update({:rating => new_rating})
             @seller.update({:rating_count => @seller.rating_count + 1})
         end
