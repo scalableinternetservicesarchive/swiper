@@ -183,7 +183,7 @@ class ListingsController < ApplicationController
                 @seller.rating = 0
             end
                 
-            new_rating = @seller.rating + ((params[:rating] - @seller.rating) / (@seller.rating.count + 1))
+            new_rating = @seller.rating + ((params[:rating] - @seller.rating) / (@seller.rating_count + 1))
             
             @seller.update({:rating => new_rating})
             @seller.update({:rating_count => @seller.rating_count + 1})
