@@ -2,7 +2,7 @@ class ListingsController < ApplicationController
 
     private
     def listing_params
-        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price, :reserved_amount, :reserved_time, :amount)
+        params.require(:listing).permit(:location, :description, :start_time, :end_time, :price, :reserved_amount, :reserved_time, :amount, :rating)
     end
 
     def filter_listings(filter_params)
@@ -172,6 +172,23 @@ class ListingsController < ApplicationController
 
     def complete
         @listing = Listing.find(params[:id])
+        @seller = User.find(@listing.user_id)
+
+        params[:rating] = params[:rating].to_i
+        if params[:rating] > 5 || params[:rating] < 0
+            redirect_to listing_path(@listing, :id => params[:id]), :flash => { :error => "You submitted an invalid rating value!" } and return
+        else
+            puts @seller.rating
+            if @seller.rating == nil
+                @seller.rating = 0
+            end
+                
+            new_rating = @seller.rating + ((params[:rating] - @seller.rating) / (@seller.rating.count + 1))
+            
+            @seller.update({:rating => new_rating})
+            @seller.update({:rating_count => @seller.rating_count + 1})
+        end
+
         if @listing.buyer != current_user.id
             redirect_to listing_path(@listing, :id => params[:id]), :flash => { :error => "You cannot currently complete this listing!" } and return
         end

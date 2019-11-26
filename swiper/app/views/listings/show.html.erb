@@ -107,8 +107,14 @@
 
         <% if @listing.buyer == current_user.id %>
           <% if !@listing.completed%>
-            <%= button_to "Complete", complete_listing_path(@listing), data: {
-                confirm: "Are you sure you want to complete this listing?"}, class: "button is-primary" %>
+            <%= form_tag complete_listing_path(@listing) do %>
+              <br><br><br>
+              <%= label_tag "Rating", nil, class: 'label'%>
+              <%= number_field_tag :rating, nil, in: 0...6, class: 'input' %>
+              <p class="help">This is a rating from 0-5</p>
+              <br><br>
+              <%= submit_tag "Complete", class: 'button is-primary' %>
+            <% end %>
           <% else %>
             <button class="button is-link" disabled>Completed</button>
           <% end %>
