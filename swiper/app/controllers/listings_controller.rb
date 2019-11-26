@@ -98,6 +98,7 @@ class ListingsController < ApplicationController
             redirect_to sign_up_path, :flash => { :alert => "Please log in or sign up to reserve swipes!" }
         else
             @listing = Listing.find(params[:id])
+            fresh_when(etag: @listing, last_modified: @listing.updated_at, public: true)
         end
     end
 
