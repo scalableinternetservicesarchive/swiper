@@ -68,9 +68,6 @@ class ListingsController < ApplicationController
             earliest += 1.day if earliest <= Time.current and latest <= Time.current and earliest <= latest
             latest += 1.day if latest <= Time.current or latest <= earliest
 
-            p earliest
-            p latest
-
             filtered = filtered.where(
                 "(start_time between ? and ? or end_time between ? and ?) or (start_time <= ? and ? <= end_time)",
                 earliest, latest, earliest, latest, earliest, latest)
