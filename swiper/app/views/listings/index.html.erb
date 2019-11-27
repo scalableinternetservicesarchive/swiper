@@ -7,10 +7,12 @@
             </div>
         </div>
         <div class="column">
+            <% cache ('table_of_listings') do %>
             <div class="title is-2">Listings</div>
                 <div class="listings" id="listing_list">
                     <%= render 'list'%>
                 </div>
+            <% end %>
         </div>
          <div class="column is-one-fifth"></div>            
     </div>
