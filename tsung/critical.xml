@@ -348,6 +348,35 @@
         <http url='/listings/%%_listing_id%%' />
       </request>
 
+      <!-- flip back and forth -->
+      <request subst="true">
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;%%_time_query%%&amp;%%_payment_query%%&amp;%%_sort_query%%'></http>
+      </request>
+
+      <request subst='true'>
+        <http url='/listings/%%_tsung_userid%%' />
+      </request>
+
+      <request subst="true">
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;%%_time_query%%&amp;%%_payment_query%%&amp;%%_sort_query%%'></http>
+      </request>
+
+      <request subst='true'>
+        <http url='/listings/%%_listing_id%%' />
+      </request>
+
+      <request subst="true">
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;%%_time_query%%&amp;%%_payment_query%%&amp;%%_sort_query%%'></http>
+      </request>
+
+      <request subst="true">
+        <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;%%_time_query%%&amp;%%_payment_query%%&amp;%%_sort_query%%'></http>
+      </request>
+
+      <request subst='true'>
+        <http url='/listings/%%_tsung_userid%%' />
+      </request>
+
 
       <!-- GET Visit a listing to reserve-->
       <request subst='true'>
@@ -414,10 +443,19 @@
 			</setdynvars>
 
 
+      <!-- random rating 1..5 -->
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        Rating = rand:uniform(10), 
+        &quot;rating=&quot; ++ integer(Rating) end.">
+				<var name="rating_query" />
+			</setdynvars>
+
+
       <!-- REQUEST POST signout -->
       <request subst="true">
         <http url="/sign_out" version='1.1' method='DELETE'
-        contents='authenticity_token=%%_encoded_csrf_token%%'
+        contents='authenticity_token=%%_encoded_csrf_token%%&amp;%%_rating_query%%&amp;commit=Complete'
         content_type='application/x-www-form-urlencoded'></http>
       </request>
 
