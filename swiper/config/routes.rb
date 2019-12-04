@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   get '/sign_in' => 'clearance/sessions#new', as: 'sign_in'
   delete '/sign_out' => 'clearance/sessions#destroy', as: 'sign_out'
   get '/reset_password' => 'clearance/passwords#new', as: 'reset_password'
-
+  get '/settings' => 'users#settings', as: 'settings'
+  post '/users/edit' => 'users#edit', as: "edit_user"
+  
   if Clearance.configuration.allow_sign_up?
     get '/sign_up' => 'users#new', as: 'sign_up'
   end
