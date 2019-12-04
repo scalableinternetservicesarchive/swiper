@@ -22,7 +22,7 @@ end
 
 puts "Creating Listings"
 User.all.each do |u|
-    100.times do
+    10.times do
         FactoryBot.create(:listing, user: u)
     end
 end
