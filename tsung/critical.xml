@@ -2,7 +2,6 @@
 <!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
 <tsung loglevel="debug" dumptraffic="true">
 
-	<option name="thinktime" value="0.25" random="true">
   <!-- Client side setup -->
   <clients>
     <client host="localhost" use_controller_vm="true" maxusers='20000'/>
