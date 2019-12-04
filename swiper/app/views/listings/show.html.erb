@@ -59,6 +59,13 @@
               <%= @listing.user.contact %>
             </div>
           <% end %>
+
+          <% if @listing.user.rating %>
+            <div class="field">
+              <span class="title is-6">Seller rating: </span>
+              <%= number_with_precision(@listing.user.rating, precision: 1)%>
+            </div>
+          <% end %>
         </div>
 
         <div class="column">

@@ -1,0 +1,44 @@
+
+<div id="clearance" class="sign-up columns">
+  <div class="column is-one-third"></div>
+  <div class="column is-one-third">
+    <span class="title is-2">User Settings</span>
+    <div style="padding-top: 1rem"></div>
+    <%= form_with url: "/users/edit" do |form| %>
+        <span class="title is-5">Accepted payment methods:</span>
+        <div class="columns">
+            <div class="column">
+            <div class="field">
+                <%= form.check_box :cash, :checked => @user.cash, class: "checkbox"%>
+                <span class="title is-3">Cash</span>
+            </div>
+            
+            <div class="field">
+                <%= form.check_box :venmo, :checked => @user.venmo, class: "checkbox" %>
+                <%= image_tag "venmo.png", size: 150, alt: "Venmo" %>
+            </div>
+            </div>
+
+            <div class="column">
+            <div class="field">
+                <%= form.check_box :cashapp, :checked => @user.cashapp, class: "checkbox" %>
+                <%= image_tag "cashapp.png", size: 150, alt: "Cash App" %>
+            </div>
+
+            <div class="field">
+                <%= form.check_box :paypal, :checked => @user.paypal, class: "checkbox" %>
+                <%= image_tag "paypal.png", size: 150, alt: "PayPal" %>
+            </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <%= form.label 'Contact info', class: "label" %>
+            <%= form.text_field :contact, :value => @user.contact, class: "input" %>
+        </div>
+        <div class="level is-mobile">
+            <%= form.submit 'Save', class: "button is-primary" %>
+        </div>
+    <% end %>
+  </div>
+</div>
