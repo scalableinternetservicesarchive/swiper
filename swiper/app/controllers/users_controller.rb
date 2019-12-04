@@ -1,4 +1,17 @@
 class UsersController < Clearance::UsersController
+  before_action :require_login, only: [:settings, :edit]
+
+  public
+  def settings
+    @user = current_user
+  end
+
+  def edit
+    @user = current_user
+    @user.update(cash: params[:cash], venmo: params[:venmo], paypal: params[:paypal], cashapp: params[:cashapp], contact: params[:contact])
+    redirect_to '/', :flash => { :success => "Settings saved!" }
+  end
+
   private
   def user_from_params
     email = user_params.delete(:email)
