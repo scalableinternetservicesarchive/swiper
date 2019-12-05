@@ -1,3 +1,4 @@
+<% cache ('listing') do %>
 <tr class="listing" id="listing-<%= listing.id%>">
   <% if local_assigns[:show_status] %>
     <td class="status">
@@ -24,3 +25,4 @@
     <%= listing.amount%>
   </td>
 </tr>
+<% end %>
