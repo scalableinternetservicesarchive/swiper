@@ -132,7 +132,7 @@
   <options>
     <!-- Set connection timeout to 2 seconds -->
     <option name="global_ack_timeout" value="2000"></option>
-    <option name="thinktime" value="0.25" random="false" override="true"/>
+ 
     <option type="ts_http" name="user_agent">
       <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
     </option>
@@ -169,6 +169,8 @@
 
       <!-- wait for up to 2 seconds, user is filling out new user form -->
       <thinktime value="2" random="true" ></thinktime>
+
+      
 
       <!-- REQUEST POST make a user -->
       <request subst="true">
@@ -353,8 +355,15 @@
         <http url='/listings?%%_location_query%%&amp;%%_price_query%%&amp;%%_amount_query%%&amp;%%_time_query%%&amp;%%_payment_query%%&amp;%%_sort_query%%'></http>
       </request>
 
+      <setdynvars sourcetype="eval"
+				code="fun({Pid,DynVars})->
+        integer_to_list(tsung_userid + 10010)
+        end.">
+				<var name="buy_id" />
+			</setdynvars>
+
       <request subst='true'>
-        <http url='/listings/%%_tsung_userid%%' />
+        <http url='/listings/%%_buy_id%%' />
       </request>
 
       <request subst="true">
@@ -374,7 +383,7 @@
       </request>
 
       <request subst='true'>
-        <http url='/listings/%%_tsung_userid%%' />
+        <http url='/listings/%%_buy_id%%' />
       </request>
 
 
@@ -383,7 +392,7 @@
         <dyn_variable name="csrf_token" xpath="html/head/meta[@name='csrf-token']/@content"></dyn_variable>
         <!-- <dyn_variable name='hour' re=''></dyn_variable>
         <dyn_variable name='minute' re=''></dyn_variable> -->
-        <http url='/listings/%%_tsung_userid%%' />
+        <http url='/listings/%%_buy_id%%' />
       </request>
       <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
@@ -394,7 +403,7 @@
 
        <!-- REQUEST POST reserve a listing -->
        <request subst='true'>
-        <http url="/listings/%%_tsung_userid%%/reserve" version='1.1' method='POST'
+        <http url="/listings/%%_buy_id%%/reserve" version='1.1' method='POST'
         contents='authenticity_token=%%_encoded_csrf_token%%&amp;listing%5Bamount%281i%29%5D=1&amp;listing%5Breserved_time%284i%29%5D=12&amp;listing%5Breserved_time%285i%29%5D=0'
         content_type='application/x-www-form-urlencoded'></http>
        </request>
@@ -402,7 +411,7 @@
       <!-- REQUEST GET follow redirect -->
       <request subst='true'>
         <dyn_variable name="profile_id" re='profile/([0-9]*)' />
-        <http url="/listings/%%_tsung_userid%%" version='1.1' method='GET'></http>
+        <http url="/listings/%%_buy_id%%" version='1.1' method='GET'></http>
      </request>
 
       <!-- REQUEST GET go to your profile -->
@@ -413,7 +422,7 @@
       <!-- REQUEST GET go to the og transaction -->
       <request subst='true'>
         <dyn_variable name="csrf_token" xpath="html/head/meta[@name='csrf-token']/@content"></dyn_variable>
-        <http url="/listings/%%_tsung_userid%%" version='1.1' method='GET'></http>
+        <http url="/listings/%%_buy_id%%" version='1.1' method='GET'></http>
       </request>
       <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
@@ -424,7 +433,7 @@
 
       <!-- REQUEST POST complete the transcation -->
       <request subst='true'>
-        <http url="/listings/%%_tsung_userid%%/complete" version='1.1' method='POST'
+        <http url="/listings/%%_buy_id%%/complete" version='1.1' method='POST'
         contents='authenticity_token=%%_encoded_csrf_token%%'
         content_type='application/x-www-form-urlencoded'></http>
       </request>
@@ -433,7 +442,7 @@
       <!-- follow the redirect -->
       <request subst='true'>
           <dyn_variable name="csrf_token" xpath="html/head/meta[@name='csrf-token']/@content"></dyn_variable>
-          <http url="/listings/%%_tsung_userid%%" version='1.1' method='GET'></http>
+          <http url="/listings/%%_buy_id%%" version='1.1' method='GET'></http>
       </request>
       <setdynvars sourcetype="eval"
 				code="fun({Pid,DynVars})->
