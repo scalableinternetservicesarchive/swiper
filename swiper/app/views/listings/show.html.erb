@@ -107,7 +107,7 @@
 
             <div class="field">
               <span class="title is-6">Reservation time: </span>
-              <%= @listing.reserved_time%>
+              <%= @listing.reserved_time.strftime("%l:%M %p")%>
             </div>
 
         <% end %>
